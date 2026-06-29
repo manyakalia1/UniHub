@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { LogIn, LogOut, LayoutDashboard, Calendar, Menu, X } from 'lucide-react';
+import { LogIn, LogOut, LayoutDashboard, Calendar, Menu, X, Sun, Moon } from 'lucide-react';
 
-export default function Header({ currentUser, onNavigate, activeTab, onLogout }) {
+export default function Header({ currentUser, onNavigate, activeTab, onLogout, theme = 'light', onToggleTheme }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const getRoleDotClass = (role) => {
@@ -86,6 +86,28 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout })
               <LogIn size={15} /> Club / Admin Login
             </button>
           )}
+
+          <button
+            onClick={onToggleTheme}
+            style={{
+              background: 'none',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-sm)',
+              width: '2.2rem',
+              height: '2.2rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: 'var(--text-secondary)',
+              transition: 'var(--transition-fast)',
+              padding: 0
+            }}
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            aria-label="Toggle theme"
+          >
+            {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+          </button>
         </nav>
 
         {/* Mobile Hamburger Toggle Button */}
@@ -142,6 +164,35 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout })
               <LogIn size={16} /> Club / Admin Login
             </button>
           )}
+
+          <button
+            onClick={onToggleTheme}
+            className="mobile-nav-link"
+            style={{
+              background: 'none',
+              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-sm)',
+              padding: '0.6rem 1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              cursor: 'pointer',
+              color: 'var(--text-secondary)',
+              width: '100%',
+              textAlign: 'left',
+              marginTop: '0.5rem'
+            }}
+          >
+            {theme === 'light' ? (
+              <>
+                <Moon size={18} /> Dark Mode: Off
+              </>
+            ) : (
+              <>
+                <Sun size={18} /> Dark Mode: On
+              </>
+            )}
+          </button>
         </div>
       )}
     </header>

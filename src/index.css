@@ -1812,6 +1812,60 @@ h1, h2, h3, h4, h5, h6 {
   animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  --bg-primary: #090d16;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1f2937;
+  
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-muted: #6b7280;
+  
+  --color-brand: #818cf8;
+  --color-brand-light: rgba(99, 102, 241, 0.15);
+  
+  --accent-blue: #38bdf8;
+  --accent-blue-light: rgba(14, 165, 233, 0.15);
+  --accent-green: #34d399;
+  --accent-green-light: rgba(16, 185, 129, 0.15);
+  --accent-pink: #f472b6;
+  --accent-pink-light: rgba(236, 72, 153, 0.15);
+  --accent-amber: #fbbf24;
+  --accent-amber-light: rgba(245, 158, 11, 0.15);
+  
+  --border-color: #1f2937;
+  --border-hover: #374151;
+}
+
+/* Specific elements color adjustment for Dark Mode */
+[data-theme="dark"] .header {
+  background-color: rgba(17, 24, 39, 0.8);
+}
+[data-theme="dark"] .event-club-badge {
+  background-color: rgba(17, 24, 39, 0.85);
+}
+[data-theme="dark"] .modal-close-btn {
+  background-color: rgba(31, 41, 55, 0.9);
+}
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+[data-theme="dark"] .dashboard-sidebar {
+  background-color: var(--bg-secondary);
+}
+[data-theme="dark"] .dashboard-nav-item:hover,
+[data-theme="dark"] .dashboard-nav-item.active {
+  background-color: var(--bg-tertiary);
+}
+[data-theme="dark"] .btn-share {
+  background-color: var(--bg-secondary) !important;
+}
+
+
 
 
 

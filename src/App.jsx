@@ -16,6 +16,7 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notices, setNotices] = useState([]);
   const [clubs, setClubs] = useState([]);
+  const [theme, setTheme] = useState('light');
 
   // Load events from LocalStorage or seed default data
   useEffect(() => {
@@ -78,6 +79,11 @@ export default function App() {
         console.error('Failed to restore session:', e);
       }
     }
+
+    // Set theme on mount
+    const savedTheme = localStorage.getItem('unihub_theme') || 'light';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
 
   // Synchronize state changes to localStorage
@@ -89,6 +95,13 @@ export default function App() {
   const updateNoticesState = (newNoticesList) => {
     setNotices(newNoticesList);
     localStorage.setItem('unihub_notices_v1', JSON.stringify(newNoticesList));
+  };
+
+  const handleToggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+    localStorage.setItem('unihub_theme', nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
   };
 
   const handleUpdateClub = (updatedClub) => {
@@ -190,6 +203,8 @@ export default function App() {
         activeTab={activeTab}
         onNavigate={setActiveTab}
         onLogout={handleLogout}
+        theme={theme}
+        onToggleTheme={handleToggleTheme}
       />
 
       <main className="main-content">
