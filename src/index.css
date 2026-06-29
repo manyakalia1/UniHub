@@ -675,8 +675,8 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(4px);
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(5px);
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -684,7 +684,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 1.5rem;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-overlay.open {
@@ -702,12 +702,12 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-premium);
   border: 1px solid var(--border-color);
   position: relative;
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
+  transform: translateY(35px) scale(0.96);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modal-overlay.open .modal-content {
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .modal-close-btn {
@@ -1769,6 +1769,49 @@ h1, h2, h3, h4, h5, h6 {
     gap: 0.8rem;
   }
 }
+
+/* Custom Keyframes & Entrance Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+.hero-tag {
+  animation: float 4s ease-in-out infinite;
+}
+
+.hero-title {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-description {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+.hero-stats {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+
+.notice-item {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.event-card {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 
 
 
