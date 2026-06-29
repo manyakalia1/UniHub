@@ -79,19 +79,19 @@ export default function EventGrid({ events, stats, notices = [], clubs = [], onE
           {/* Section 1: Campus Stats */}
           <div className="sidebar-section-card stats">
             <h3 className="sidebar-section-title">
-              <Compass size={16} /> Campus Stats
+              <Compass size={16} /> Uni Stats (Flex) 📈
             </h3>
             <div className="compact-stats-list">
               <div className="compact-stat-row">
-                <span className="compact-stat-lbl">Active Events</span>
+                <span className="compact-stat-lbl">Active Happenings</span>
                 <span className="compact-stat-val">{stats.approvedCount}</span>
               </div>
               <div className="compact-stat-row">
-                <span className="compact-stat-lbl">Active Societies</span>
+                <span className="compact-stat-lbl">Societies Cooking</span>
                 <span className="compact-stat-val">{stats.clubsCount}</span>
               </div>
               <div className="compact-stat-row">
-                <span className="compact-stat-lbl">Seat Reservations</span>
+                <span className="compact-stat-lbl">RSVPs Secured</span>
                 <span className="compact-stat-val">{stats.registrationsCount}</span>
               </div>
             </div>
@@ -100,7 +100,7 @@ export default function EventGrid({ events, stats, notices = [], clubs = [], onE
           {/* Section 2: Announcements Bulletin */}
           <div className="sidebar-section-card notice-board">
             <h3 className="sidebar-section-title">
-              <Megaphone size={16} /> Notice Board & Updates
+              <Megaphone size={16} /> Campus Buzz & Announcements 📢
             </h3>
             <div className="notices-list">
               {notices.length > 0 ? (
@@ -134,7 +134,7 @@ export default function EventGrid({ events, stats, notices = [], clubs = [], onE
               <input
                 type="text"
                 className="search-input"
-                placeholder="Search events, skills..."
+                placeholder="Search events, tags, vibes... 🔍"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -147,7 +147,7 @@ export default function EventGrid({ events, stats, notices = [], clubs = [], onE
                 value={selectedClub}
                 onChange={(e) => setSelectedClub(e.target.value)}
               >
-                <option value="all">All Societies</option>
+                <option value="all">Select Vibe/Society 🎡</option>
                 {clubs.map((club) => (
                   <option key={club.id} value={club.id}>
                     {club.logo} {club.name}
@@ -161,19 +161,19 @@ export default function EventGrid({ events, stats, notices = [], clubs = [], onE
                 className={`tab-btn ${activeTab === 'all' ? 'active' : ''}`}
                 onClick={() => setActiveTab('all')}
               >
-                All Board
+                All Vibes 🌈
               </button>
               <button
                 className={`tab-btn ${activeTab === 'live' ? 'active' : ''}`}
                 onClick={() => setActiveTab('live')}
               >
-                Live
+                Live Now 🔥
               </button>
               <button
                 className={`tab-btn ${activeTab === 'upcoming' ? 'active' : ''}`}
                 onClick={() => setActiveTab('upcoming')}
               >
-                Upcoming
+                Next Up ⏳
               </button>
             </div>
           </div>
@@ -192,11 +192,11 @@ export default function EventGrid({ events, stats, notices = [], clubs = [], onE
             </div>
           ) : (
             <div className="empty-state" style={{ marginTop: '0' }}>
-              <span className="empty-state-icon">🔍</span>
-              <h3>No events match criteria</h3>
-              <p>Check spelling, reset filters, or browse all events of the week.</p>
+              <span className="empty-state-icon">😿</span>
+              <h3>Big L! No events match this vibe</h3>
+              <p>Maybe change up the filters or check out the entire week's schedule.</p>
               <button className="btn-secondary" onClick={handleResetFilters}>
-                View All Events
+                Show Me Everything ✨
               </button>
             </div>
           )}

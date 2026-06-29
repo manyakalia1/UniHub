@@ -60,7 +60,7 @@ export default function EventCard({ event, onClick }) {
         )}
         
         <span className={`event-status-badge ${status.toLowerCase()}`}>
-          {status}
+          {status === 'Live' ? 'Live 🔥' : 'Next Up ⏳'}
         </span>
         
         <span className="event-club-badge">
@@ -95,9 +95,9 @@ export default function EventCard({ event, onClick }) {
         <div className="event-card-footer">
           <span className="registrations-count">
             <Users size={14} />
-            <span>{event.registrants ? event.registrants.length : 0} Registered</span>
+            <span>{event.registrants ? event.registrants.length : 0} RSVPs Secured 🎟️</span>
           </span>
-          <button className="btn-card-action">View Details</button>
+          <button className="btn-card-action">Check It Out ✨</button>
         </div>
       </div>
     </div>
