@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { X, Calendar, Clock, MapPin, Award, CheckCircle, ExternalLink, ArrowRight } from 'lucide-react';
 
 export default function EventDetailModal({ event, clubs = [], isOpen, onClose, onRegister }) {
-  const clubInfo = clubs.find(c => c.id === event.clubId);
-
   const [formData, setFormData] = useState({
     name: '',
     roll: '',
@@ -16,6 +14,8 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
   const [shareCopied, setShareCopied] = useState(false);
 
   if (!isOpen || !event) return null;
+
+  const clubInfo = clubs.find(c => c.id === event.clubId);
 
   const handleShareClick = () => {
     const shareUrl = `${window.location.origin}${window.location.pathname}?event=${event.id}`;
