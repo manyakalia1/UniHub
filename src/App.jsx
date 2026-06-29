@@ -6,7 +6,7 @@ import EventDetailModal from './components/EventDetailModal';
 import Login from './components/Login';
 import ClubDashboard from './components/ClubDashboard';
 import AdminDashboard from './components/AdminDashboard';
-import { INITIAL_EVENTS, INITIAL_NOTICES } from './utils/mockData';
+import { INITIAL_EVENTS, INITIAL_NOTICES, CLUBS } from './utils/mockData';
 
 export default function App() {
   const [events, setEvents] = useState([]);
@@ -15,6 +15,7 @@ export default function App() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notices, setNotices] = useState([]);
+  const [clubs, setClubs] = useState([]);
 
   // Load events from LocalStorage or seed default data
   useEffect(() => {
@@ -43,6 +44,19 @@ export default function App() {
       localStorage.setItem('unihub_notices_v1', JSON.stringify(INITIAL_NOTICES));
     }
     setNotices(currentNotices);
+
+    let currentClubs = CLUBS;
+    const savedClubs = localStorage.getItem('unihub_clubs_v2');
+    if (savedClubs) {
+      try {
+        currentClubs = JSON.parse(savedClubs);
+      } catch (e) {
+        console.error('Failed to parse saved clubs:', e);
+      }
+    } else {
+      localStorage.setItem('unihub_clubs_v2', JSON.stringify(CLUBS));
+    }
+    setClubs(currentClubs);
 
     // Check for shared event parameter: ?event=event-id
     const params = new URLSearchParams(window.location.search);
@@ -75,6 +89,12 @@ export default function App() {
   const updateNoticesState = (newNoticesList) => {
     setNotices(newNoticesList);
     localStorage.setItem('unihub_notices_v1', JSON.stringify(newNoticesList));
+  };
+
+  const handleUpdateClub = (updatedClub) => {
+    const updatedClubsList = clubs.map(c => c.id === updatedClub.id ? updatedClub : c);
+    setClubs(updatedClubsList);
+    localStorage.setItem('unihub_clubs_v2', JSON.stringify(updatedClubsList));
   };
 
   const handleLogin = (userSession) => {
@@ -178,6 +198,7 @@ export default function App() {
             events={events} 
             stats={stats}
             notices={notices}
+            clubs={clubs}
             onEventClick={handleOpenDetailModal} 
           />
         )}
@@ -195,6 +216,7 @@ export default function App() {
               <AdminDashboard
                 events={events}
                 notices={notices}
+                clubs={clubs}
                 onApproveEvent={handleApproveEvent}
                 onDeleteEvent={handleDeleteEvent}
                 onUpdateNotices={updateNoticesState}
@@ -203,8 +225,10 @@ export default function App() {
               <ClubDashboard
                 clubId={currentUser.clubId}
                 events={events}
+                clubs={clubs}
                 onAddEvent={handleAddEvent}
                 onDeleteEvent={handleDeleteEvent}
+                onUpdateClub={handleUpdateClub}
               />
             )}
           </div>
@@ -220,6 +244,7 @@ export default function App() {
       {/* Detail & Registration Modal */}
       <EventDetailModal
         event={selectedEvent}
+        clubs={clubs}
         isOpen={isModalOpen}
         onClose={handleCloseDetailModal}
         onRegister={handleRegisterStudent}

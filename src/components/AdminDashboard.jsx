@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Shield, Check, X, Calendar, Users, Activity, ListOrdered, Megaphone, Flame, Bell, Lightbulb, Award } from 'lucide-react';
-import { CLUBS } from '../utils/mockData';
+// CLUBS import removed, using clubs prop instead
 
-export default function AdminDashboard({ events, notices = [], onApproveEvent, onDeleteEvent, onUpdateNotices }) {
+export default function AdminDashboard({ events, notices = [], clubs = [], onApproveEvent, onDeleteEvent, onUpdateNotices }) {
   const [activeSubTab, setActiveSubTab] = useState('moderation');
   const [newNotice, setNewNotice] = useState({
     text: '',
@@ -23,9 +23,9 @@ export default function AdminDashboard({ events, notices = [], onApproveEvent, o
       totalApproved: approved.length,
       totalPending: pending.length,
       totalRegistrations: totalRegs,
-      totalClubs: CLUBS.length
+      totalClubs: clubs.length
     };
-  }, [events]);
+  }, [events, clubs]);
 
   const pendingEvents = useMemo(() => {
     return events.filter(e => e.status === 'pending');
@@ -64,7 +64,7 @@ export default function AdminDashboard({ events, notices = [], onApproveEvent, o
                 className={`dashboard-nav-item ${activeSubTab === 'clubs' ? 'active' : ''}`}
                 onClick={() => setActiveSubTab('clubs')}
               >
-                <ListOrdered size={18} /> Registered Clubs ({CLUBS.length})
+                <ListOrdered size={18} /> Registered Clubs ({clubs.length})
               </button>
             </li>
           </ul>
@@ -197,7 +197,7 @@ export default function AdminDashboard({ events, notices = [], onApproveEvent, o
                   </tr>
                 </thead>
                 <tbody>
-                  {CLUBS.map(club => {
+                  {clubs.map(club => {
                     const totalClubEvents = events.filter(e => e.clubId === club.id).length;
                     return (
                       <tr key={club.id}>

@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { PlusCircle, FileText, Users, Trash2, Calendar, FileSpreadsheet, Send, Info } from 'lucide-react';
-import { CLUBS } from '../utils/mockData';
+import { PlusCircle, FileText, Users, Trash2, Calendar, FileSpreadsheet, Send, Info, Settings, Plus } from 'lucide-react';
 
-export default function ClubDashboard({ clubId, events, onAddEvent, onDeleteEvent }) {
+export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, onDeleteEvent, onUpdateClub }) {
   const [activeSubTab, setActiveSubTab] = useState('manage');
   
   // Event Form State
@@ -21,7 +20,25 @@ export default function ClubDashboard({ clubId, events, onAddEvent, onDeleteEven
     responsesLink: ''
   });
 
-  const club = useMemo(() => CLUBS.find(c => c.id === clubId), [clubId]);
+  const club = useMemo(() => clubs.find(c => c.id === clubId), [clubs, clubId]);
+
+  // Profile Editor States
+  const [profileName, setProfileName] = useState(club?.name || '');
+  const [profileLogo, setProfileLogo] = useState(club?.logo || '');
+  const [profileBanner, setProfileBanner] = useState(club?.banner || '');
+  const [profileDesc, setProfileDesc] = useState(club?.description || '');
+  const [coreTeam, setCoreTeam] = useState(club?.coreTeam || []);
+  const [newMember, setNewMember] = useState({ name: '', role: '' });
+
+  React.useEffect(() => {
+    if (club) {
+      setProfileName(club.name);
+      setProfileLogo(club.logo);
+      setProfileBanner(club.banner || '');
+      setProfileDesc(club.description);
+      setCoreTeam(club.coreTeam || []);
+    }
+  }, [club]);
 
   // Filter events belonging to this club
   const clubEvents = useMemo(() => {
@@ -177,6 +194,14 @@ export default function ClubDashboard({ clubId, events, onAddEvent, onDeleteEven
                 onClick={() => setActiveSubTab('registrants')}
               >
                 <Users size={18} /> Registrations ({clubRegistrants.length})
+              </button>
+            </li>
+            <li>
+              <button 
+                className={`dashboard-nav-item ${activeSubTab === 'profile' ? 'active' : ''}`}
+                onClick={() => setActiveSubTab('profile')}
+              >
+                <Settings size={18} /> Club Profile Settings
               </button>
             </li>
           </ul>
@@ -605,6 +630,241 @@ export default function ClubDashboard({ clubId, events, onAddEvent, onDeleteEven
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {activeSubTab === 'profile' && (
+          <div>
+            <div className="dashboard-header">
+              <div>
+                <h2>Edit Club Profile</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                  Update your club name, description, logo, and banner. These changes are broadcasted immediately across the UniHub platform.
+                </p>
+              </div>
+            </div>
+
+            {/* LIVE PREVIEW BOX */}
+            <div style={{ 
+              borderRadius: 'var(--radius-lg)', 
+              overflow: 'hidden', 
+              border: '1px solid var(--border-color)', 
+              marginBottom: '2rem', 
+              boxShadow: 'var(--shadow-md)',
+              backgroundColor: 'var(--bg-secondary)'
+            }}>
+              {/* Banner Preview */}
+              <div style={{ 
+                height: '160px', 
+                width: '100%', 
+                background: profileBanner ? `url(${profileBanner}) center/cover no-repeat` : 'linear-gradient(135deg, var(--color-brand-light), var(--bg-tertiary))',
+                position: 'relative'
+              }}>
+                {/* Logo Preview */}
+                <div style={{ 
+                  position: 'absolute', 
+                  bottom: '-25px', 
+                  left: '30px', 
+                  width: '70px', 
+                  height: '70px', 
+                  borderRadius: 'var(--radius-md)', 
+                  backgroundColor: 'var(--bg-secondary)', 
+                  border: '3px solid var(--bg-secondary)',
+                  boxShadow: 'var(--shadow-md)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  fontSize: '2rem',
+                  overflow: 'hidden'
+                }}>
+                  {profileLogo.startsWith('http') ? (
+                    <img src={profileLogo} alt="logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    profileLogo || 'ℹ️'
+                  )}
+                </div>
+              </div>
+              
+              <div style={{ padding: '2rem 2rem 1.5rem 2rem' }}>
+                <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', marginBottom: '0.3rem', marginTop: '0.5rem' }}>
+                  {profileName || 'Your Club Name'}
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.4', maxWidth: '800px' }}>
+                  {profileDesc || 'Provide a compelling description of your society...'}
+                </p>
+              </div>
+            </div>
+
+            {/* FORM AND CORE TEAM SPLIT GRID */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+              
+              {/* Left Column: Basic Details Form */}
+              <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <h3 style={{ marginBottom: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                  <Settings size={18} style={{ color: 'var(--color-brand)' }} /> Club Details
+                </h3>
+                
+                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                  <label className="form-label">Club Name *</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    value={profileName}
+                    onChange={(e) => setProfileName(e.target.value)}
+                    placeholder="e.g. ACM Student Chapter"
+                    required
+                  />
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '1rem' }}>
+                  <label className="form-label">About / Description *</label>
+                  <textarea
+                    className="form-textarea"
+                    style={{ minHeight: '100px' }}
+                    value={profileDesc}
+                    onChange={(e) => setProfileDesc(e.target.value)}
+                    placeholder="Write details about your society's purpose, events, recruitments..."
+                    required
+                  />
+                </div>
+
+                <div className="form-group-row">
+                  <div className="form-group" style={{ marginBottom: '1rem' }}>
+                    <label className="form-label">Logo Emoji or URL *</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      value={profileLogo}
+                      onChange={(e) => setProfileLogo(e.target.value)}
+                      placeholder="e.g. 💻 or https://..."
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '1rem' }}>
+                    <label className="form-label">Banner Image URL</label>
+                    <input
+                      type="url"
+                      className="form-input"
+                      value={profileBanner}
+                      onChange={(e) => setProfileBanner(e.target.value)}
+                      placeholder="https://images.unsplash.com/..."
+                    />
+                  </div>
+                </div>
+
+                <button 
+                  type="button" 
+                  className="btn-primary" 
+                  style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }}
+                  onClick={() => {
+                    if (!profileName.trim() || !profileDesc.trim() || !profileLogo.trim()) {
+                      alert('Please fill out all mandatory fields.');
+                      return;
+                    }
+                    onUpdateClub({
+                      ...club,
+                      name: profileName.trim(),
+                      logo: profileLogo.trim(),
+                      banner: profileBanner.trim(),
+                      description: profileDesc.trim(),
+                      coreTeam: coreTeam
+                    });
+                    alert('Club Profile saved successfully! Changes are updated.');
+                  }}
+                >
+                  Save Profile Settings
+                </button>
+              </div>
+
+              {/* Right Column: Core Team Manager */}
+              <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                  <Users size={18} style={{ color: 'var(--color-brand)' }} /> Core Team Members
+                </h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '1.2rem' }}>
+                  List the lead roles (President, Secretary, Technical head, etc.) of your society.
+                </p>
+
+                {/* Core Members List */}
+                {coreTeam.length > 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '1.5rem', maxHeight: '220px', overflowY: 'auto', paddingRight: '0.3rem' }}>
+                    {coreTeam.map((member, idx) => (
+                      <div key={idx} style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        padding: '0.6rem 0.8rem', 
+                        border: '1px solid var(--border-color)', 
+                        borderRadius: 'var(--radius-md)', 
+                        backgroundColor: 'var(--bg-primary)' 
+                      }}>
+                        <div>
+                          <p style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>{member.name}</p>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{member.role}</p>
+                        </div>
+                        <button
+                          type="button"
+                          className="btn-icon-action reject"
+                          style={{ width: '26px', height: '26px', minWidth: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          onClick={() => {
+                            const updatedTeam = coreTeam.filter((_, i) => i !== idx);
+                            setCoreTeam(updatedTeam);
+                          }}
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', padding: '1.5rem 0', color: 'var(--text-muted)', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem' }}>
+                    <p style={{ fontSize: '0.8rem' }}>No core team members listed.</p>
+                  </div>
+                )}
+
+                {/* Add Member Form */}
+                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                  <h4 style={{ fontSize: '0.9rem', marginBottom: '0.8rem', fontWeight: 600 }}>Add New Core Member</h4>
+                  <div style={{ display: 'flex', gap: '0.8rem', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', gap: '0.6rem' }}>
+                      <input
+                        type="text"
+                        placeholder="Name (e.g. Kunal)"
+                        className="form-input"
+                        style={{ flex: 1, fontSize: '0.85rem', padding: '0.45rem 0.7rem' }}
+                        value={newMember.name}
+                        onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Role (e.g. President)"
+                        className="form-input"
+                        style={{ flex: 1, fontSize: '0.85rem', padding: '0.45rem 0.7rem' }}
+                        value={newMember.role}
+                        onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      style={{ padding: '0.45rem', fontSize: '0.8rem', justifyContent: 'center', display: 'flex', gap: '0.3rem', fontWeight: 600 }}
+                      onClick={() => {
+                        if (!newMember.name.trim() || !newMember.role.trim()) {
+                          alert('Please enter both Name and Role.');
+                          return;
+                        }
+                        setCoreTeam([...coreTeam, { name: newMember.name.trim(), role: newMember.role.trim() }]);
+                        setNewMember({ name: '', role: '' });
+                      }}
+                    >
+                      <Plus size={14} /> Add Member
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
         )}
       </main>

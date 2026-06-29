@@ -5,7 +5,12 @@ export const CLUBS = [
     logo: '💃',
     description: 'The official dance society of the college. We train in western, classical, and hip-hop formats for national group dance events.',
     memberCount: 45,
-    accentColor: '#ec4899' // Pink/Rose
+    accentColor: '#ec4899', // Pink/Rose
+    banner: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Kunal Kapoor', role: 'President & Lead Choreographer' },
+      { name: 'Riya Sen', role: 'Vice President' }
+    ]
   },
   {
     id: 'cu_arcs',
@@ -13,7 +18,12 @@ export const CLUBS = [
     logo: '⚽',
     description: 'Nurturing athletic talent. We organize cricket tournaments, football leagues, table tennis challenges, and athletic meets.',
     memberCount: 160,
-    accentColor: '#10b981' // Emerald Green
+    accentColor: '#10b981', // Emerald Green
+    banner: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Vikram Singh', role: 'Sports Captain' },
+      { name: 'Rohit Sharma', role: 'Vice Captain' }
+    ]
   },
   {
     id: 'ieee',
@@ -21,7 +31,12 @@ export const CLUBS = [
     logo: '⚡',
     description: 'Advancing tech for humanity. We coordinate hands-on workshops, hardware bootcamps, and developer project displays.',
     memberCount: 110,
-    accentColor: '#0ea5e9' // Sky Blue
+    accentColor: '#0ea5e9', // Sky Blue
+    banner: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Divya Teja', role: 'IEEE Branch Chair' },
+      { name: 'Ananya Roy', role: 'Technical Head' }
+    ]
   },
   {
     id: 'euphony',
@@ -29,7 +44,12 @@ export const CLUBS = [
     logo: '🎵',
     description: 'For all vocalists, guitarists, drummers, and symphony enthusiasts. We organize OAT jam sessions and concert shows.',
     memberCount: 75,
-    accentColor: '#8b5cf6' // Violet
+    accentColor: '#8b5cf6', // Violet
+    banner: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Siddharth Bose', role: 'Music Rep / Vocalist' },
+      { name: 'Megha Iyer', role: 'Lead Guitarist' }
+    ]
   },
   {
     id: 'cut_c',
@@ -37,7 +57,12 @@ export const CLUBS = [
     logo: '🎭',
     description: 'Expressing social voices through street plays, mime acts, stage dramas, and scriptwriting workshops.',
     memberCount: 50,
-    accentColor: '#f59e0b' // Amber
+    accentColor: '#f59e0b', // Amber
+    banner: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Ayush Goel', role: 'Drama Lead / Director' },
+      { name: 'Tanvi Shah', role: 'Script Coordinator' }
+    ]
   },
   {
     id: 'acm',
@@ -45,7 +70,12 @@ export const CLUBS = [
     logo: '💻',
     description: 'Building competitive programming skills. We host hackathons, web dev sprints, and tech algorithms talks.',
     memberCount: 130,
-    accentColor: '#3b82f6' // Indigo
+    accentColor: '#3b82f6', // Indigo
+    banner: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Aarav Sharma', role: 'ACM President' },
+      { name: 'Isha Patel', role: 'Vice President' }
+    ]
   },
   {
     id: 'hostel_committee',
@@ -53,7 +83,12 @@ export const CLUBS = [
     logo: '🏢',
     description: 'Coordinating hostel sports tournaments, mess councils, room arrangements, and annual hostel night events.',
     memberCount: 80,
-    accentColor: '#14b8a6' // Teal
+    accentColor: '#14b8a6', // Teal
+    banner: 'https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Kabir Verma', role: 'Hostel Rep' },
+      { name: 'Raghav Aggarwal', role: 'Mess Lead' }
+    ]
   },
   {
     id: 'vibin_z',
@@ -61,7 +96,12 @@ export const CLUBS = [
     logo: '🎧',
     description: 'Bringing vibin hostel vibes! We screen movies, hold late-night acoustic singing circles, and organize tea-chat jam rooms.',
     memberCount: 65,
-    accentColor: '#f43f5e' // Crimson/Rose
+    accentColor: '#f43f5e', // Crimson/Rose
+    banner: 'https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Pranav Jha', role: 'Vibin Social Lead' },
+      { name: 'Shreya Kapoor', role: 'Cultural Organiser' }
+    ]
   },
   {
     id: 'iste',
@@ -69,7 +109,12 @@ export const CLUBS = [
     logo: '🎓',
     description: 'Nurturing professional development. We host national level seminars, skill classes, and industrial training visits.',
     memberCount: 90,
-    accentColor: '#64748b' // Slate
+    accentColor: '#64748b', // Slate
+    banner: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Tarun Saxena', role: 'ISTE Chairperson' },
+      { name: 'Deepika Malhotra', role: 'Secretary' }
+    ]
   }
 ];
 

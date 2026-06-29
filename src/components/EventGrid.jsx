@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import EventCard from './EventCard';
-import { CLUBS } from '../utils/mockData';
+// CLUBS import removed, using clubs prop instead
 import { Search, Calendar, Megaphone, Bell, Flame, Award, Lightbulb, Compass } from 'lucide-react';
 
 const getNoticeIcon = (type) => {
@@ -18,7 +18,7 @@ const getNoticeIcon = (type) => {
   }
 };
 
-export default function EventGrid({ events, stats, notices = [], onEventClick }) {
+export default function EventGrid({ events, stats, notices = [], clubs = [], onEventClick }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClub, setSelectedClub] = useState('all');
   const [activeTab, setActiveTab] = useState('all');
@@ -148,7 +148,7 @@ export default function EventGrid({ events, stats, notices = [], onEventClick })
                 onChange={(e) => setSelectedClub(e.target.value)}
               >
                 <option value="all">All Societies</option>
-                {CLUBS.map((club) => (
+                {clubs.map((club) => (
                   <option key={club.id} value={club.id}>
                     {club.logo} {club.name}
                   </option>
