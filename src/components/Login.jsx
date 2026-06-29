@@ -12,7 +12,7 @@ export default function Login({ onLogin, onCancel }) {
     setError('');
 
     if (!username || !password) {
-      setError('Bruh, fill all the fields first! 🙄');
+      setError('Please fill in all fields.');
       return;
     }
 
@@ -26,7 +26,7 @@ export default function Login({ onLogin, onCancel }) {
         name: matchedCred.name
       });
     } else {
-      setError('Skill issue! Double-check your ID or Password. 😿');
+      setError('Invalid username or password. Please try again.');
     }
   };
 
@@ -34,9 +34,9 @@ export default function Login({ onLogin, onCancel }) {
     <div className="login-card">
       <div className="login-header">
         <h2 style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-          <KeyRound size={24} style={{ color: 'var(--color-brand)' }} /> Enter the Suite 🔐
+          <KeyRound size={24} style={{ color: 'var(--color-brand)' }} /> Portal Login
         </h2>
-        <p>Log in to cook events, approve requests, and flex on the campus wall.</p>
+        <p>Log in to manage weekly events or moderate submissions.</p>
       </div>
 
       {error && (
@@ -81,11 +81,11 @@ export default function Login({ onLogin, onCancel }) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
           <button type="submit" className="btn-primary" style={{ width: '100%' }}>
-            <LogIn size={16} /> Let Me In! 🔑
+            <LogIn size={16} /> Access Dashboard
           </button>
           
           <button type="button" className="btn-secondary" onClick={onCancel} style={{ width: '100%' }}>
-            Back to Main Vibe
+            Back to Events Board
           </button>
         </div>
       </form>

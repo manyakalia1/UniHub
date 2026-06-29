@@ -5,10 +5,10 @@ export default function HeroSection({ eventsCount, clubsCount, registrationsCoun
   return (
     <section className="hero">
       <div className="hero-container">
-        <span className="hero-tag">🔥 What's the Campus Vibe?</span>
-        <h1 className="hero-title">Unfiltered Campus Buzz: No Caps, Just Events</h1>
+        <span className="hero-tag">Weekly College Bulletin</span>
+        <h1 className="hero-title">Discover What's Happening on Campus This Week</h1>
         <p className="hero-description">
-          Ditch those spammy WhatsApp groups and 99+ missed notifications. UniHub has entered the chat. All club events, workshops, and sports trials, served hot and fresh. Real, no cap. 💅
+          Say goodbye to cluttered WhatsApp groups and missed notifications. UniHub brings all student club events, workshops, hackathons, and sports trials under a single clean, easy-to-use platform.
         </p>
 
         <button 
@@ -16,21 +16,21 @@ export default function HeroSection({ eventsCount, clubsCount, registrationsCoun
           onClick={onBrowseClick}
           style={{ padding: '0.8rem 2rem', fontSize: '1.05rem', marginBottom: '2.5rem' }}
         >
-          <CalendarRange size={18} /> Find Your Vibe ✨
+          <CalendarRange size={18} /> Browse Live & Upcoming Events
         </button>
 
         <div className="hero-stats">
           <div className="stat-item">
             <span className="stat-number">{eventsCount}</span>
-            <span className="stat-label">Happenings Cooking</span>
+            <span className="stat-label">Events This Week</span>
           </div>
           <div className="stat-item" style={{ borderLeft: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)', padding: '0 3rem' }}>
             <span className="stat-number">{clubsCount}</span>
-            <span className="stat-label">Clubs Active</span>
+            <span className="stat-label">Active Clubs</span>
           </div>
           <div className="stat-item">
             <span className="stat-number">{registrationsCount}</span>
-            <span className="stat-label">RSVPs Secured 🎟️</span>
+            <span className="stat-label">Registrations Sent</span>
           </div>
         </div>
       </div>
