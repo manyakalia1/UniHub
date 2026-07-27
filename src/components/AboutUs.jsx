@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Users, Award, ShieldCheck, Zap, Globe, HeartHandshake, Rocket, ArrowRight } from 'lucide-react';
+import { Sparkles, Users, Award, ShieldCheck, Zap, Globe, HeartHandshake, Rocket, ArrowRight, Crown, Lightbulb } from 'lucide-react';
 
 export default function AboutUs({ onNavigate }) {
   const stats = [
@@ -11,34 +11,35 @@ export default function AboutUs({ onNavigate }) {
 
   const team = [
     {
+      name: 'Mrs. Manya Kalia',
+      role: 'CEO & Sole Founder (The One & Only)',
+      avatar: '👑',
+      bio: 'The visionary force behind EventSync. Absolutely passionate about cutting-edge technology, innovation, and empowering students to experience seamless campus engagements.',
+      tag: '👑 Founder & CEO',
+      color: '#ec4899',
+      isFounder: true
+    },
+    {
       name: 'Aarav Sharma',
-      role: 'Founding Director & Lead Architect',
+      role: 'Lead System Architect',
       avatar: '👨‍💻',
-      bio: 'Envisioned a centralized digital ecosystem to replace fragmented bulletin boards and campus chat groups.',
-      tag: 'Core Founder',
+      bio: 'Architected the real-time event pipeline and automated queue management system.',
+      tag: 'Engineering',
       color: '#6366f1'
     },
     {
       name: 'Ananya Roy',
-      role: 'Head of Student Experience & UI/UX',
+      role: 'Head of Product Experience & UI/UX',
       avatar: '👩‍🎨',
-      bio: 'Crafted the Apple-inspired fluid aesthetic and accessible design language that students love navigating.',
+      bio: 'Crafted the Apple-inspired fluid design system, responsive glassmorphism, and accessible layouts.',
       tag: 'Design Chief',
-      color: '#ec4899'
-    },
-    {
-      name: 'Vikramaditya Verma',
-      role: 'Chief Technology Officer',
-      avatar: '🚀',
-      bio: 'Architected real-time notification engine, QR ticket verification, and instant club sync capabilities.',
-      tag: 'Engineering Lead',
-      color: '#10b981'
+      color: '#0ea5e9'
     },
     {
       name: 'Sneha Patel',
       role: 'Student Relations & Club Liaison',
       avatar: '🌟',
-      bio: 'Coordinates onboarding across tech, cultural, and sports clubs to foster vibrant campus engagements.',
+      bio: 'Coordinates onboarding across tech, cultural, and sports societies for vibrant campus collaboration.',
       tag: 'Operations',
       color: '#f59e0b'
     }
@@ -69,7 +70,6 @@ export default function AboutUs({ onNavigate }) {
     <div className="about-page-wrapper fade-in-section">
       {/* Hero Header Section */}
       <section className="about-hero-banner">
-        <div className="about-hero-backdrop"></div>
         <div className="about-hero-content">
           <div className="vibrant-badge">
             <Sparkles size={16} /> Empowering Campus Life
@@ -78,7 +78,7 @@ export default function AboutUs({ onNavigate }) {
             The Digital Heart of <span className="shimmer-text">University Engagements</span>
           </h1>
           <p className="about-hero-subtitle">
-            EventSync bridges student passion with administrative synergy. We transform how events are created, discovered, and experienced across campus.
+            Founded by <strong>Mrs. Manya Kalia</strong>, EventSync bridges student passion with administrative synergy. We transform how events are created, discovered, and experienced across campus.
           </p>
 
           <div className="about-hero-actions">
@@ -88,6 +88,24 @@ export default function AboutUs({ onNavigate }) {
             <button className="btn-secondary-vibrant" onClick={() => onNavigate('motto')}>
               Our Core Motto
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Founder Spotlight Card */}
+      <section className="about-section-container">
+        <div className="founder-spotlight-box">
+          <div className="founder-avatar-circle">
+            <Crown size={32} className="crown-icon-glow" />
+            <span className="founder-emoji">👩‍💻</span>
+          </div>
+          <div className="founder-details">
+            <span className="founder-tag-pill">✨ Founder & CEO</span>
+            <h2 className="founder-name">Mrs. Manya Kalia</h2>
+            <p className="founder-title-sub">The One and Only Founder & CEO of EventSync</p>
+            <p className="founder-bio-text">
+              "Absolutely passionate about technology and innovation. Mrs. Manya Kalia built EventSync to bridge the gap between student aspirations and campus ecosystem capabilities. Her vision fuels our relentless drive for Apple-grade design and performance."
+            </p>
           </div>
         </div>
       </section>
@@ -127,16 +145,16 @@ export default function AboutUs({ onNavigate }) {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Leadership & Team Section */}
       <section className="about-section-container">
         <div className="section-header-center">
-          <h2 className="section-title-gradient">Meet The Visionaries</h2>
-          <p className="section-subtitle-clean">The team behind EventSync's fluid user experience and campus coordination.</p>
+          <h2 className="section-title-gradient">Leadership & Team</h2>
+          <p className="section-subtitle-clean">Spearheaded by Mrs. Manya Kalia & dedicated student architects.</p>
         </div>
 
         <div className="team-grid">
           {team.map((member, idx) => (
-            <div key={idx} className="team-card-vibrant">
+            <div key={idx} className={`team-card-vibrant ${member.isFounder ? 'founder-highlight-card' : ''}`}>
               <div className="team-avatar-box" style={{ borderColor: member.color }}>
                 <span className="team-emoji-avatar">{member.avatar}</span>
               </div>
