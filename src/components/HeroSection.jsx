@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Compass, FileText, Clock, Sparkles, Zap, ShieldCheck, Ticket, Wifi, Signal, Battery } from 'lucide-react';
+import { Search, Compass, FileText, Clock, Sparkles, Zap, ShieldCheck, Ticket, Wifi, Signal, Battery, Code, Flame, Music, Trophy, BookOpen, Layers } from 'lucide-react';
 import TypewriterTitle from './TypewriterTitle';
 
 export default function HeroSection({ 
@@ -11,12 +11,12 @@ export default function HeroSection({
   onCategorySelect = () => {}
 }) {
   const categoryPills = [
-    { id: 'all', label: '🔥 All Fests' },
-    { id: 'tech', label: '💻 Tech & Hackathons' },
-    { id: 'cultural', label: '🎨 Cultural & Dance' },
-    { id: 'sports', label: '⚽ Sports & Gaming' },
-    { id: 'music', label: '🎵 Music & Concerts' },
-    { id: 'workshop', label: '🎓 Workshops' }
+    { id: 'all', label: 'All Fests', icon: <Layers size={14} /> },
+    { id: 'tech', label: 'Tech & Hackathons', icon: <Code size={14} /> },
+    { id: 'cultural', label: 'Cultural & Arts', icon: <Flame size={14} /> },
+    { id: 'sports', label: 'Sports & Gaming', icon: <Trophy size={14} /> },
+    { id: 'music', label: 'Music & Concerts', icon: <Music size={14} /> },
+    { id: 'workshop', label: 'Workshops', icon: <BookOpen size={14} /> }
   ];
 
   const typewriterPhrases = [
@@ -61,7 +61,7 @@ export default function HeroSection({
             </button>
           </div>
 
-          {/* Quick Category Pills */}
+          {/* Quick Category Pills with Lucide Icons */}
           <div className="category-pills-row">
             {categoryPills.map((pill) => (
               <button
@@ -69,7 +69,8 @@ export default function HeroSection({
                 className={`category-pill ${selectedCategory === pill.id ? 'active' : ''}`}
                 onClick={() => onCategorySelect(pill.id)}
               >
-                {pill.label}
+                <span className="pill-icon">{pill.icon}</span>
+                <span>{pill.label}</span>
               </button>
             ))}
           </div>
@@ -80,7 +81,7 @@ export default function HeroSection({
           <div className="iphone-glow-ambient"></div>
           
           <div className="iphone-chassis">
-            {/* Side Buttons Realism */}
+            {/* Side Buttons */}
             <div className="iphone-side-btn volume-up"></div>
             <div className="iphone-side-btn volume-down"></div>
             <div className="iphone-side-btn power"></div>
@@ -126,7 +127,7 @@ export default function HeroSection({
                   <h3>HackOverflow 2026</h3>
                   <p>📍 Main Auditorium &bull; ⏰ Dec 12, 10:00 AM</p>
                   <div className="iphone-card-footer">
-                    <span className="registrations-count">🎟️ 150 Passes Issued</span>
+                    <span className="registrations-count">150 Passes Issued</span>
                     <button className="iphone-action-btn">Get Pass</button>
                   </div>
                 </div>
@@ -134,12 +135,12 @@ export default function HeroSection({
                 {/* Event Card 2 */}
                 <div className="iphone-card">
                   <div className="iphone-card-tag dance">
-                    🎨 Cultural Dance Battle
+                    Cultural Dance Battle
                   </div>
                   <h3>Beat Drop Fests</h3>
                   <p>📍 Amphitheatre &bull; ⏰ Dec 14, 4:00 PM</p>
                   <div className="iphone-card-footer">
-                    <span className="registrations-count">🔥 42 Registered</span>
+                    <span className="registrations-count">42 Registered</span>
                     <button className="iphone-action-btn outline">Details</button>
                   </div>
                 </div>
@@ -147,7 +148,7 @@ export default function HeroSection({
                 {/* Event Card 3 */}
                 <div className="iphone-card">
                   <div className="iphone-card-tag workshop">
-                    🎓 AI & Tech Summit
+                    AI & Tech Summit
                   </div>
                   <h3>Web3 & AI Workshop</h3>
                   <p>📍 Hall B &bull; ⏰ Dec 18, 11:00 AM</p>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Target, Compass, Flame, ShieldAlert, Sparkles, ChevronDown, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Target, Compass, Flame, Sparkles, ChevronDown, CheckCircle2, ArrowRight, Search, Users, Zap, Award, Gem, Eye } from 'lucide-react';
 
 export default function MottoSection({ onNavigate }) {
   const [activeAccordion, setActiveAccordion] = useState(0);
@@ -36,10 +36,10 @@ export default function MottoSection({ onNavigate }) {
   ];
 
   const coreValues = [
-    { title: 'Transparency', desc: 'Real-time approval status for every event request.', icon: '🔍' },
-    { title: 'Inclusivity', desc: 'Open to all colleges, clubs, and student organizations.', icon: '🤝' },
-    { title: 'Velocity', desc: 'Instant event publishing and instant student registration.', icon: '⚡' },
-    { title: 'Excellence', desc: 'Apple-grade design standards, fluid motion, and dark mode.', icon: '💎' },
+    { title: 'Transparency', desc: 'Real-time approval status for every event request.', icon: <Search size={26} color="#6366f1" /> },
+    { title: 'Inclusivity', desc: 'Open to all colleges, clubs, and student organizations.', icon: <Users size={26} color="#ec4899" /> },
+    { title: 'Velocity', desc: 'Instant event publishing and instant student registration.', icon: <Zap size={26} color="#10b981" /> },
+    { title: 'Excellence', desc: 'Apple-grade design standards, fluid motion, and dark mode.', icon: <Gem size={26} color="#0ea5e9" /> },
   ];
 
   return (
@@ -116,7 +116,7 @@ export default function MottoSection({ onNavigate }) {
         <div className="values-grid">
           {coreValues.map((val, idx) => (
             <div key={idx} className="value-card-vibrant">
-              <div className="value-emoji">{val.icon}</div>
+              <div className="value-icon-box">{val.icon}</div>
               <h3 className="value-title">{val.title}</h3>
               <p className="value-desc">{val.desc}</p>
             </div>

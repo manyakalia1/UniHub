@@ -1,60 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, X, Zap } from 'lucide-react';
+import { Sparkles, X, Zap, TrendingUp, Flame } from 'lucide-react';
 
 const GENZ_NOTIFICATIONS = [
   {
     id: 1,
     user: 'Rahul M.',
     action: 'claimed pass for',
-    event: 'HackOverflow 2026 💻',
-    meme: 'Code aati nahi par free T-shirt lene gaya hai 💀',
+    event: 'HackOverflow 2026',
+    meme: 'Code aati nahi par free T-shirt lene gaya hai',
     time: '2m ago',
-    tag: '🔥 Hot Pass'
+    tag: 'Hot Pass'
   },
   {
     id: 2,
     user: 'Ananya & 4 friends',
     action: 'registered for',
-    event: 'Beat Drop Dance Battle 💃',
-    meme: 'Professors se attendance ka mast bahana mil gaya 😜',
+    event: 'Beat Drop Dance Battle',
+    meme: 'Professors se attendance ka mast bahana mil gaya',
     time: 'Just now',
-    tag: '⚡ Trending'
+    tag: 'Trending'
   },
   {
     id: 3,
     user: 'Karan S.',
     action: 'joined',
-    event: 'Acoustic Jam Night 🎸',
-    meme: 'Guitar bajana aata nahi par crush aayi hai wahan 💘',
+    event: 'Acoustic Jam Night',
+    meme: 'Guitar bajana aata nahi par crush aayi hai wahan',
     time: '4m ago',
-    tag: '🎵 Live Vibe'
+    tag: 'Live Vibe'
   },
   {
     id: 4,
-    user: 'Canteen Alert 🍕',
+    user: 'Canteen Alert',
     action: 'Only 8 passes left for',
-    event: 'Food Fest & Mocktail Night 🍹',
-    meme: 'Samosa & free drinks khatam hone se pehle book kar lo 🏃‍♂️',
+    event: 'Food Fest & Mocktail Night',
+    meme: 'Samosa & free drinks khatam hone se pehle book kar lo',
     time: '1m ago',
-    tag: '🚨 Selling Fast'
+    tag: 'Selling Fast'
   },
   {
     id: 5,
     user: 'Vikram T.',
     action: 'booked front row seat at',
-    event: 'RoboWars Championship 🤖',
-    meme: 'Aaj pakka lab ke saare circuits aur fuse fukenge ⚡',
+    event: 'RoboWars Championship',
+    meme: 'Aaj pakka lab ke saare circuits aur fuse fukenge',
     time: '5m ago',
-    tag: '💥 High Tension'
+    tag: 'High Tension'
   },
   {
     id: 6,
     user: 'Priya K.',
     action: 'unlocked VIP pass for',
-    event: 'E-Sports BGMI Tournament 🎮',
-    meme: 'Exam ki tayari chhod ke squad ko clutch karwane chali 💀',
+    event: 'E-Sports BGMI Tournament',
+    meme: 'Exam ki tayari chhod ke squad ko clutch karwane chali',
     time: '3m ago',
-    tag: '🏆 Winner Vibe'
+    tag: 'Winner Vibe'
   }
 ];
 
