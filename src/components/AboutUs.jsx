@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Users, Award, ShieldCheck, Zap, Globe, HeartHandshake, Rocket, ArrowRight, Crown, Lightbulb } from 'lucide-react';
+import { Sparkles, Users, Award, ShieldCheck, Zap, Globe, HeartHandshake, Rocket, ArrowRight, Crown, Building2, Cpu } from 'lucide-react';
 
 export default function AboutUs({ onNavigate }) {
   const stats = [
@@ -11,37 +11,21 @@ export default function AboutUs({ onNavigate }) {
 
   const team = [
     {
-      name: 'Mrs. Manya Kalia',
+      name: 'Manya Kalia',
       role: 'CEO & Sole Founder (The One & Only)',
       avatar: '👑',
-      bio: 'The visionary force behind EventSync. Absolutely passionate about cutting-edge technology, innovation, and empowering students to experience seamless campus engagements.',
+      bio: 'The visionary leader behind EventSync. Passionate about cutting-edge technology, innovation, and empowering students with seamless campus experiences under RM Enterprises.',
       tag: '👑 Founder & CEO',
       color: '#ec4899',
       isFounder: true
     },
     {
-      name: 'Aarav Sharma',
-      role: 'Lead System Architect',
+      name: 'Manik Mittal',
+      role: 'Key Technical Contributor | Founder, RN2M Technologies',
       avatar: '👨‍💻',
-      bio: 'Architected the real-time event pipeline and automated queue management system.',
-      tag: 'Engineering',
+      bio: 'Tech innovator and Founder of RN2M Technologies (creators of Classync.). Trusted partner & key contributor who helped architect EventSync’s scheduling & sync algorithms.',
+      tag: '🚀 Tech Collaborator',
       color: '#6366f1'
-    },
-    {
-      name: 'Ananya Roy',
-      role: 'Head of Product Experience & UI/UX',
-      avatar: '👩‍🎨',
-      bio: 'Crafted the Apple-inspired fluid design system, responsive glassmorphism, and accessible layouts.',
-      tag: 'Design Chief',
-      color: '#0ea5e9'
-    },
-    {
-      name: 'Sneha Patel',
-      role: 'Student Relations & Club Liaison',
-      avatar: '🌟',
-      bio: 'Coordinates onboarding across tech, cultural, and sports societies for vibrant campus collaboration.',
-      tag: 'Operations',
-      color: '#f59e0b'
     }
   ];
 
@@ -72,13 +56,13 @@ export default function AboutUs({ onNavigate }) {
       <section className="about-hero-banner">
         <div className="about-hero-content">
           <div className="vibrant-badge">
-            <Sparkles size={16} /> Empowering Campus Life
+            <Building2 size={16} /> An RM Enterprises Technology Venture
           </div>
           <h1 className="about-hero-title">
             The Digital Heart of <span className="shimmer-text">University Engagements</span>
           </h1>
           <p className="about-hero-subtitle">
-            Founded by <strong>Mrs. Manya Kalia</strong>, EventSync bridges student passion with administrative synergy. We transform how events are created, discovered, and experienced across campus.
+            Founded by <strong>Manya Kalia</strong> under <strong>RM Enterprises</strong>, EventSync bridges student passion with administrative synergy across colleges nationwide.
           </p>
 
           <div className="about-hero-actions">
@@ -101,10 +85,26 @@ export default function AboutUs({ onNavigate }) {
           </div>
           <div className="founder-details">
             <span className="founder-tag-pill">✨ Founder & CEO</span>
-            <h2 className="founder-name">Mrs. Manya Kalia</h2>
-            <p className="founder-title-sub">The One and Only Founder & CEO of EventSync</p>
+            <h2 className="founder-name">Manya Kalia</h2>
+            <p className="founder-title-sub">The One and Only Founder & CEO of EventSync | RM Enterprises</p>
             <p className="founder-bio-text">
-              "Absolutely passionate about technology and innovation. Mrs. Manya Kalia built EventSync to bridge the gap between student aspirations and campus ecosystem capabilities. Her vision fuels our relentless drive for Apple-grade design and performance."
+              "Absolutely passionate about technology and innovation. Manya Kalia engineered EventSync under RM Enterprises to revolutionize student activities, society coordination, and campus digital passes."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Partner & Tech Ecosystem Box (RN2M Technologies) */}
+      <section className="about-section-container">
+        <div className="partner-tech-box">
+          <div className="partner-icon-wrapper">
+            <Cpu size={28} />
+          </div>
+          <div className="partner-content">
+            <span className="partner-badge">🤝 Key Technology Partner</span>
+            <h3>Collaborative Synergy with RN2M Technologies</h3>
+            <p>
+              Special thanks to <strong>Manik Mittal</strong> (Founder, RN2M Technologies - architects of Classync.) for his valuable technical insights and contribution to EventSync’s high-performance scheduling core.
             </p>
           </div>
         </div>
@@ -145,14 +145,14 @@ export default function AboutUs({ onNavigate }) {
         </div>
       </section>
 
-      {/* Leadership & Team Section */}
+      {/* Leadership & Key Team Section */}
       <section className="about-section-container">
         <div className="section-header-center">
-          <h2 className="section-title-gradient">Leadership & Team</h2>
-          <p className="section-subtitle-clean">Spearheaded by Mrs. Manya Kalia & dedicated student architects.</p>
+          <h2 className="section-title-gradient">Leadership & Key Contributors</h2>
+          <p className="section-subtitle-clean">Spearheaded by Manya Kalia (RM Enterprises) with key contribution from Manik Mittal (RN2M Technologies).</p>
         </div>
 
-        <div className="team-grid">
+        <div className="team-grid-two">
           {team.map((member, idx) => (
             <div key={idx} className={`team-card-vibrant ${member.isFounder ? 'founder-highlight-card' : ''}`}>
               <div className="team-avatar-box" style={{ borderColor: member.color }}>

@@ -2592,6 +2592,63 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--accent-pink-light) 100%) !important;
 }
 
+/* Partner & Tech Ecosystem Box */
+.partner-tech-box {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--color-brand-light) 100%);
+  border: 1px solid var(--color-brand);
+  border-radius: var(--radius-xl);
+  padding: 1.8rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.partner-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--color-brand);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+}
+
+.partner-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-brand);
+  letter-spacing: 0.5px;
+}
+
+.partner-content h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 0.1rem;
+}
+
+.partner-content p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-top: 0.3rem;
+  line-height: 1.5;
+}
+
+.team-grid-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .about-section-container {
   margin-bottom: 4rem;
 }

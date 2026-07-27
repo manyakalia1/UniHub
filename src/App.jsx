@@ -366,8 +366,10 @@ export default function App() {
 
       <footer className="footer">
         <div className="footer-logo">EventSync</div>
-        <p>A unified campus activities coordination portal designed to keep students updated.</p>
-        <p style={{ marginTop: '0.8rem', fontSize: '0.75rem' }}>&copy; {new Date().getFullYear()} EventSync College System. All rights reserved.</p>
+        <p>A flagship campus activities coordination portal operated under <strong>RM Enterprises</strong>. Founded by <strong>Manya Kalia</strong>.</p>
+        <p style={{ marginTop: '0.8rem', fontSize: '0.75rem', opacity: 0.8 }}>
+          &copy; {new Date().getFullYear()} EventSync &bull; An RM Enterprises Venture. All rights reserved. Key Tech Collaborator: RN2M Technologies.
+        </p>
       </footer>
 
       {/* Naughty Gen-Z Live Campus Events Toast Notification */}
