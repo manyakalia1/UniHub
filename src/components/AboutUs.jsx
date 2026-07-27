@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Users, Award, ShieldCheck, Zap, Globe, HeartHandshake, Rocket, ArrowRight, Crown, Building2, Cpu } from 'lucide-react';
+import { Sparkles, Users, Award, ShieldCheck, Zap, Globe, HeartHandshake, Rocket, ArrowRight, Crown, Building2 } from 'lucide-react';
 
 export default function AboutUs({ onNavigate }) {
   const stats = [
@@ -18,14 +18,6 @@ export default function AboutUs({ onNavigate }) {
       tag: '👑 Founder & CEO',
       color: '#ec4899',
       isFounder: true
-    },
-    {
-      name: 'Manik Mittal',
-      role: 'Key Technical Contributor | Founder, RN2M Technologies',
-      avatar: '👨‍💻',
-      bio: 'Tech innovator and Founder of RN2M Technologies (creators of Classync.). Trusted partner & key contributor who helped architect EventSync’s scheduling & sync algorithms.',
-      tag: '🚀 Tech Collaborator',
-      color: '#6366f1'
     }
   ];
 
@@ -94,22 +86,6 @@ export default function AboutUs({ onNavigate }) {
         </div>
       </section>
 
-      {/* Partner & Tech Ecosystem Box (RN2M Technologies) */}
-      <section className="about-section-container">
-        <div className="partner-tech-box">
-          <div className="partner-icon-wrapper">
-            <Cpu size={28} />
-          </div>
-          <div className="partner-content">
-            <span className="partner-badge">🤝 Key Technology Partner</span>
-            <h3>Collaborative Synergy with RN2M Technologies</h3>
-            <p>
-              Special thanks to <strong>Manik Mittal</strong> (Founder, RN2M Technologies - architects of Classync.) for his valuable technical insights and contribution to EventSync’s high-performance scheduling core.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Metrics Row */}
       <section className="about-section-container">
         <div className="stats-grid-vibrant">
@@ -145,16 +121,16 @@ export default function AboutUs({ onNavigate }) {
         </div>
       </section>
 
-      {/* Leadership & Key Team Section */}
+      {/* Founder & Leadership Section */}
       <section className="about-section-container">
         <div className="section-header-center">
-          <h2 className="section-title-gradient">Leadership & Key Contributors</h2>
-          <p className="section-subtitle-clean">Spearheaded by Manya Kalia (RM Enterprises) with key contribution from Manik Mittal (RN2M Technologies).</p>
+          <h2 className="section-title-gradient">Founder & Leadership</h2>
+          <p className="section-subtitle-clean">Spearheaded by Manya Kalia under RM Enterprises.</p>
         </div>
 
-        <div className="team-grid-two">
+        <div className="team-grid-single">
           {team.map((member, idx) => (
-            <div key={idx} className={`team-card-vibrant ${member.isFounder ? 'founder-highlight-card' : ''}`}>
+            <div key={idx} className="team-card-vibrant founder-highlight-card">
               <div className="team-avatar-box" style={{ borderColor: member.color }}>
                 <span className="team-emoji-avatar">{member.avatar}</span>
               </div>
