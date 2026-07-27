@@ -1,0 +1,159 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DB_FILE = path.join(__dirname, 'db.json');
+
+// Default Seed Data
+const DEFAULT_CLUBS = [
+  {
+    id: 'stacatos',
+    name: 'Stacatos (Western & Classical Dance)',
+    logo: '💃',
+    description: 'The official dance society of the college. We train in western, classical, and hip-hop formats for national group dance events.',
+    memberCount: 45,
+    accentColor: '#ec4899',
+    banner: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Kunal Kapoor', role: 'President & Lead Choreographer' },
+      { name: 'Riya Sen', role: 'Vice President' }
+    ]
+  },
+  {
+    id: 'cu_arcs',
+    name: 'CU Arcs (Sports Association)',
+    logo: '⚽',
+    description: 'Nurturing athletic talent. We organize cricket tournaments, football leagues, table tennis challenges, and athletic meets.',
+    memberCount: 160,
+    accentColor: '#10b981',
+    banner: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Vikram Singh', role: 'Sports Captain' },
+      { name: 'Rohit Sharma', role: 'Vice Captain' }
+    ]
+  },
+  {
+    id: 'ieee',
+    name: 'IEEE (Computing & Tech Society)',
+    logo: '⚡',
+    description: 'Advancing tech for humanity. We coordinate hands-on workshops, hardware bootcamps, and developer project displays.',
+    memberCount: 110,
+    accentColor: '#0ea5e9',
+    banner: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+    coreTeam: [
+      { name: 'Divya Teja', role: 'IEEE Branch Chair' },
+      { name: 'Ananya Roy', role: 'Technical Head' }
+    ]
+  }
+];
+
+const DEFAULT_EVENTS = [
+  {
+    id: 'evt-1',
+    title: 'HackOverflow 2026',
+    clubId: 'ieee',
+    clubName: 'IEEE (Computing & Tech Society)',
+    date: '2026-12-12',
+    time: '10:00 AM',
+    venue: 'Main Campus Auditorium & Labs',
+    category: 'tech',
+    capacity: 150,
+    registeredCount: 42,
+    queueCount: 0,
+    status: 'approved',
+    banner: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80',
+    description: 'Annual 36-hour hackathon to build solutions for smart campuses, AI automation, and green energy.',
+    requirements: ['Bring Laptop & Charger', 'Student ID Card', 'GitHub Account'],
+    prizes: ['₹50,000 Cash Pool', 'Incubation Support', 'Certificates & Swag'],
+    registrants: []
+  },
+  {
+    id: 'evt-2',
+    title: 'Beat Drop Fest',
+    clubId: 'stacatos',
+    clubName: 'Stacatos (Western & Classical Dance)',
+    date: '2026-12-14',
+    time: '04:00 PM',
+    venue: 'Open Air Amphitheatre',
+    category: 'cultural',
+    capacity: 200,
+    registeredCount: 88,
+    queueCount: 0,
+    status: 'approved',
+    banner: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80',
+    description: 'Inter-college group dance competition featuring Western, Hip-Hop, and Classical Fusion categories.',
+    requirements: ['Prop List submission by Dec 10', 'Audio Track in MP3 format'],
+    prizes: ['Trophies', 'Gift Vouchers', 'Certificate of Excellence'],
+    registrants: []
+  },
+  {
+    id: 'evt-3',
+    title: 'RoboWars Championship',
+    clubId: 'ieee',
+    clubName: 'IEEE (Computing & Tech Society)',
+    date: '2026-12-16',
+    time: '11:00 AM',
+    venue: 'Mechanical Block Arena',
+    category: 'tech',
+    capacity: 80,
+    registeredCount: 30,
+    queueCount: 0,
+    status: 'approved',
+    banner: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80',
+    description: 'Combat robotics tournament featuring 15kg & 30kg bot weight categories in a steel cage arena.',
+    requirements: ['Safety Goggles', 'Remote Controller Frequencies Registration'],
+    prizes: ['₹30,000 First Prize', 'Trophies'],
+    registrants: []
+  }
+];
+
+const DEFAULT_NOTICES = [
+  {
+    id: 'not-1',
+    title: 'Winter Fest Season Registrations Open!',
+    content: 'All student clubs are requested to submit their December fest proposals by 5th Nov for single-window approval.',
+    date: '2026-10-25',
+    category: 'urgent',
+    author: 'Student Welfare Board'
+  },
+  {
+    id: 'not-2',
+    title: 'Digital PDF Pass Mandatory for Entry',
+    content: 'Security teams will scan QR code / verify PDF passes at entry gates for all auditorium events.',
+    date: '2026-10-24',
+    category: 'general',
+    author: 'Campus Security'
+  }
+];
+
+// Initialize JSON Disk Storage
+export function loadDB() {
+  try {
+    if (fs.existsSync(DB_FILE)) {
+      const data = fs.readFileSync(DB_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (err) {
+    console.error('Error reading db.json:', err);
+  }
+
+  const initial = {
+    clubs: DEFAULT_CLUBS,
+    events: DEFAULT_EVENTS,
+    notices: DEFAULT_NOTICES,
+    clubRequests: []
+  };
+
+  saveDB(initial);
+  return initial;
+}
+
+export function saveDB(data) {
+  try {
+    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing to db.json:', err);
+  }
+}

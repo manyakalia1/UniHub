@@ -11,6 +11,7 @@ import MottoSection from './components/MottoSection';
 import DeviceSimulator from './components/DeviceSimulator';
 import GenZLiveToast from './components/GenZLiveToast';
 import { INITIAL_EVENTS, INITIAL_NOTICES, CLUBS, CREDENTIALS } from './utils/mockData';
+import { getAPIEvents, getAPIClubs, getAPINotices, registerAPIEvent, createAPIEvent, updateAPIEventStatus } from './api/client';
 
 export default function App() {
   const [events, setEvents] = useState([]);
@@ -24,52 +25,47 @@ export default function App() {
   const [credentials, setCredentials] = useState({});
   const [clubRequests, setClubRequests] = useState([]);
 
-  // Load events from LocalStorage or seed default data
+  // Load data from Express REST API Server with localStorage fallback
   useEffect(() => {
-    let currentEvents = INITIAL_EVENTS;
-    const savedEvents = localStorage.getItem('eventsync_events_v8');
-    if (savedEvents) {
-      try {
-        currentEvents = JSON.parse(savedEvents);
-      } catch (e) {
-        console.error('Failed to parse saved events:', e);
+    async function loadDataFromAPI() {
+      // 1. Fetch Events from REST API
+      const apiEvents = await getAPIEvents();
+      if (apiEvents && apiEvents.length > 0) {
+        setEvents(apiEvents);
+        localStorage.setItem('eventsync_events_v8', JSON.stringify(apiEvents));
+      } else {
+        const savedEvents = localStorage.getItem('eventsync_events_v8');
+        setEvents(savedEvents ? JSON.parse(savedEvents) : INITIAL_EVENTS);
       }
-    } else {
-      localStorage.setItem('eventsync_events_v8', JSON.stringify(INITIAL_EVENTS));
-    }
-    setEvents(currentEvents);
 
-    let currentNotices = INITIAL_NOTICES;
-    const savedNotices = localStorage.getItem('eventsync_notices_v2');
-    if (savedNotices) {
-      try {
-        currentNotices = JSON.parse(savedNotices);
-      } catch (e) {
-        console.error('Failed to parse saved notices:', e);
+      // 2. Fetch Notices from REST API
+      const apiNotices = await getAPINotices();
+      if (apiNotices && apiNotices.length > 0) {
+        setNotices(apiNotices);
+        localStorage.setItem('eventsync_notices_v2', JSON.stringify(apiNotices));
+      } else {
+        const savedNotices = localStorage.getItem('eventsync_notices_v2');
+        setNotices(savedNotices ? JSON.parse(savedNotices) : INITIAL_NOTICES);
       }
-    } else {
-      localStorage.setItem('eventsync_notices_v2', JSON.stringify(INITIAL_NOTICES));
-    }
-    setNotices(currentNotices);
 
-    let currentClubs = CLUBS;
-    const savedClubs = localStorage.getItem('eventsync_clubs_v3');
-    if (savedClubs) {
-      try {
-        currentClubs = JSON.parse(savedClubs);
-      } catch (e) {
-        console.error('Failed to parse saved clubs:', e);
+      // 3. Fetch Clubs from REST API
+      const apiClubs = await getAPIClubs();
+      if (apiClubs && apiClubs.length > 0) {
+        setClubs(apiClubs);
+        localStorage.setItem('eventsync_clubs_v3', JSON.stringify(apiClubs));
+      } else {
+        const savedClubs = localStorage.getItem('eventsync_clubs_v3');
+        setClubs(savedClubs ? JSON.parse(savedClubs) : CLUBS);
       }
-    } else {
-      localStorage.setItem('eventsync_clubs_v3', JSON.stringify(CLUBS));
     }
-    setClubs(currentClubs);
+
+    loadDataFromAPI();
 
     // Check for shared event parameter: ?event=event-id
     const params = new URLSearchParams(window.location.search);
     const sharedEventId = params.get('event');
     if (sharedEventId) {
-      const foundEvent = currentEvents.find(e => e.id === sharedEventId && e.status === 'approved');
+      const foundEvent = events.find(e => e.id === sharedEventId && e.status === 'approved');
       if (foundEvent) {
         setSelectedEvent(foundEvent);
         setIsModalOpen(true);
@@ -102,7 +98,7 @@ export default function App() {
     }
     setClubRequests(currentRequests);
 
-    // Load active session if saved
+    // Restore saved user session
     const savedUser = localStorage.getItem('eventsync_user');
     if (savedUser) {
       try {
