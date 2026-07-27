@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, Calendar, Clock, MapPin, Award, CheckCircle, ExternalLink, ArrowRight } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, Award, CheckCircle, ExternalLink, ArrowRight, Download } from 'lucide-react';
+import { exportEventToPDF } from '../utils/pdfGenerator';
 
 export default function EventDetailModal({ event, clubs = [], isOpen, onClose, onRegister }) {
   const [formData, setFormData] = useState({
@@ -103,36 +104,58 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
                 </span>
                 <h2 className="modal-title" style={{ margin: '0.2rem 0 0.5rem 0' }}>{event.title}</h2>
               </div>
-              <button 
-                onClick={handleShareClick}
-                className="btn-share"
-                style={{ 
-                  display: 'inline-flex', 
-                  alignItems: 'center', 
-                  gap: '0.4rem',
-                  padding: '0.45rem 0.85rem',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  backgroundColor: 'var(--bg-tertiary)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: 'var(--radius-sm)',
-                  cursor: 'pointer',
-                  color: 'var(--text-secondary)',
-                  transition: 'var(--transition-fast)',
-                  marginTop: '0.2rem',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                {shareCopied ? (
-                  <>
-                    <CheckCircle size={14} style={{ color: 'var(--accent-green)' }} /> Copied!
-                  </>
-                ) : (
-                  <>
-                    <ExternalLink size={14} /> Share Event
-                  </>
-                )}
-              </button>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'nowrap', marginTop: '0.2rem' }}>
+                <button 
+                  onClick={() => exportEventToPDF(event, clubInfo)}
+                  className="btn-share"
+                  style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '0.4rem',
+                    padding: '0.45rem 0.85rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    backgroundColor: 'var(--accent-indigo)',
+                    border: '1px solid var(--accent-indigo)',
+                    borderRadius: 'var(--radius-sm)',
+                    cursor: 'pointer',
+                    color: '#ffffff',
+                    transition: 'var(--transition-fast)',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  <Download size={14} /> Download PDF
+                </button>
+                <button 
+                  onClick={handleShareClick}
+                  className="btn-share"
+                  style={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    gap: '0.4rem',
+                    padding: '0.45rem 0.85rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    backgroundColor: 'var(--bg-tertiary)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-sm)',
+                    cursor: 'pointer',
+                    color: 'var(--text-secondary)',
+                    transition: 'var(--transition-fast)',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {shareCopied ? (
+                    <>
+                      <CheckCircle size={14} style={{ color: 'var(--accent-green)' }} /> Copied!
+                    </>
+                  ) : (
+                    <>
+                      <ExternalLink size={14} /> Share Event
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
             <div className="modal-tags" style={{ marginTop: '0.5rem' }}>
               {event.tags && event.tags.map((tag, idx) => (

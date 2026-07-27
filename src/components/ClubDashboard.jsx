@@ -474,7 +474,7 @@ export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, 
                         checked={formData.registrationType === 'internal'}
                         onChange={handleInputChange}
                       />
-                      On-site (UniHub Form)
+                      On-site (EventSync Form)
                     </label>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', cursor: 'pointer' }}>
                       <input
@@ -639,7 +639,7 @@ export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, 
               <div>
                 <h2>Edit Club Profile</h2>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                  Update your club name, description, logo, and banner. These changes are broadcasted immediately across the UniHub platform.
+                  Update your club name, description, logo, and banner. These changes are broadcasted immediately across the EventSync platform.
                 </p>
               </div>
             </div>

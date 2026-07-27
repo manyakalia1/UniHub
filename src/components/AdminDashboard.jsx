@@ -2,7 +2,17 @@ import React, { useState, useMemo } from 'react';
 import { Shield, Check, X, Calendar, Users, Activity, ListOrdered, Megaphone, Flame, Bell, Lightbulb, Award } from 'lucide-react';
 // CLUBS import removed, using clubs prop instead
 
-export default function AdminDashboard({ events, notices = [], clubs = [], onApproveEvent, onDeleteEvent, onUpdateNotices }) {
+export default function AdminDashboard({ 
+  events, 
+  notices = [], 
+  clubs = [], 
+  clubRequests = [], 
+  onApproveEvent, 
+  onDeleteEvent, 
+  onUpdateNotices,
+  onApproveClubRegistration,
+  onRejectClubRegistration
+}) {
   const [activeSubTab, setActiveSubTab] = useState('moderation');
   const [newNotice, setNewNotice] = useState({
     text: '',
@@ -65,6 +75,14 @@ export default function AdminDashboard({ events, notices = [], clubs = [], onApp
                 onClick={() => setActiveSubTab('clubs')}
               >
                 <ListOrdered size={18} /> Registered Clubs ({clubs.length})
+              </button>
+            </li>
+            <li>
+              <button 
+                className={`dashboard-nav-item ${activeSubTab === 'clubRequests' ? 'active' : ''}`}
+                onClick={() => setActiveSubTab('clubRequests')}
+              >
+                <Users size={18} /> Reg Requests ({clubRequests.filter(r => r.status === 'pending').length})
               </button>
             </li>
           </ul>
@@ -182,7 +200,7 @@ export default function AdminDashboard({ events, notices = [], clubs = [], onApp
             <div className="dashboard-header">
               <div>
                 <h2>Registered Clubs</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Profiles and metrics of registered student clubs on the UniHub platform.</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Profiles and metrics of registered student clubs on the EventSync platform.</p>
               </div>
             </div>
 
@@ -208,8 +226,9 @@ export default function AdminDashboard({ events, notices = [], clubs = [], onApp
                         <td style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', maxWidth: '300px' }}>
                           {club.description}
                         </td>
-                        <td style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
-                          {club.id} / {club.id}123
+                        <td style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                          <div><strong>{club.coreTeam && club.coreTeam[0] ? club.coreTeam[0].name : 'Representative'}</strong></div>
+                          <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', marginTop: '0.2rem' }}>Username: {club.id}</div>
                         </td>
                         <td style={{ fontWeight: 600, textAlign: 'center' }}>
                           {totalClubEvents}
@@ -220,6 +239,89 @@ export default function AdminDashboard({ events, notices = [], clubs = [], onApp
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {activeSubTab === 'clubRequests' && (
+          <div>
+            <div className="dashboard-header">
+              <div>
+                <h2>Club Registration Requests</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                  Review requests from student groups seeking to register a new club. Granting permission creates their portal account instantly.
+                </p>
+              </div>
+            </div>
+
+            {clubRequests.filter(r => r.status === 'pending').length > 0 ? (
+              <div className="table-responsive">
+                <table className="dashboard-table">
+                  <thead>
+                    <tr>
+                      <th>Logo</th>
+                      <th>Club ID & Name</th>
+                      <th>Representative</th>
+                      <th>Description</th>
+                      <th>Requested On</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clubRequests.filter(r => r.status === 'pending').map(request => (
+                      <tr key={request.id}>
+                        <td style={{ fontSize: '1.8rem', textAlign: 'center', width: '60px' }}>
+                          {request.logo}
+                        </td>
+                        <td>
+                          <div style={{ fontWeight: 600, color: 'var(--color-brand)' }}>{request.name}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>ID: {request.clubId}</div>
+                        </td>
+                        <td>
+                          <div style={{ fontWeight: 500 }}>{request.representativeName}</div>
+                        </td>
+                        <td style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', maxWidth: '300px' }}>
+                          {request.description}
+                        </td>
+                        <td style={{ fontSize: '0.85rem' }}>
+                          {request.dateRequested}
+                        </td>
+                        <td>
+                          <div className="actions-cell">
+                            <button
+                              className="btn-icon-action approve"
+                              title="Approve & Register Club"
+                              onClick={() => {
+                                onApproveClubRegistration(request.id);
+                                alert(`Club "${request.name}" has been registered! They can now log in using ID: "${request.clubId}"`);
+                              }}
+                            >
+                              <Check size={16} />
+                            </button>
+                            <button
+                              className="btn-icon-action reject"
+                              title="Reject Request"
+                              onClick={() => {
+                                if (window.confirm(`Are you sure you want to reject the registration request for "${request.name}"?`)) {
+                                  onRejectClubRegistration(request.id);
+                                }
+                              }}
+                            >
+                              <X size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="empty-state" style={{ padding: '3rem 1rem' }}>
+                <span className="empty-state-icon">🏢</span>
+                <h3>No pending requests</h3>
+                <p>There are no pending club registration requests at this time.</p>
+              </div>
+            )}
           </div>
         )}
 

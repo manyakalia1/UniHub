@@ -1,8 +1,7 @@
 import React from 'react';
-import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, ArrowRight } from 'lucide-react';
 
 export default function EventCard({ event, onClick }) {
-  // Helper to determine status style
   const getStatusText = (eventDate) => {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -10,25 +9,38 @@ export default function EventCard({ event, onClick }) {
     const dd = String(today.getDate()).padStart(2, '0');
     const todayStr = `${yyyy}-${mm}-${dd}`;
     if (eventDate === todayStr) {
-      return 'Live';
+      return 'Live Today';
     }
     return 'Upcoming';
   };
 
   const status = getStatusText(event.date);
 
-  // Fallback gradient if poster is missing or fails
+  // Parse Month and Day for IndiaCollegeFest style date box
+  const getDateParts = (dateStr) => {
+    try {
+      const d = new Date(dateStr);
+      const month = d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+      const day = d.getDate();
+      return { month, day };
+    } catch {
+      return { month: 'FEB', day: '15' };
+    }
+  };
+
+  const { month, day } = getDateParts(event.date);
+
   const getGradientBackground = (clubId) => {
     switch (clubId) {
-      case 'stacatos': return 'linear-gradient(135deg, #fce7f3, #fbcfe8)'; // Pink/Rose
-      case 'cu_arcs': return 'linear-gradient(135deg, #d1fae5, #a7f3d0)'; // Emerald Green
-      case 'ieee': return 'linear-gradient(135deg, #e0f2fe, #bae6fd)'; // Sky Blue
-      case 'euphony': return 'linear-gradient(135deg, #f5f3ff, #ddd6fe)'; // Violet
-      case 'cut_c': return 'linear-gradient(135deg, #fef3c7, #fde68a)'; // Amber
-      case 'acm': return 'linear-gradient(135deg, #e0e7ff, #c7d2fe)'; // Indigo
-      case 'hostel_committee': return 'linear-gradient(135deg, #e0f2fe, #ccfbf1)'; // Teal
-      case 'vibin_z': return 'linear-gradient(135deg, #ffe4e6, #fecdd3)'; // Crimson/Rose
-      case 'iste': return 'linear-gradient(135deg, #f1f5f9, #cbd5e1)'; // Slate
+      case 'stacatos': return 'linear-gradient(135deg, #fce7f3, #fbcfe8)';
+      case 'cu_arcs': return 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+      case 'ieee': return 'linear-gradient(135deg, #e0f2fe, #bae6fd)';
+      case 'euphony': return 'linear-gradient(135deg, #f5f3ff, #ddd6fe)';
+      case 'cut_c': return 'linear-gradient(135deg, #fef3c7, #fde68a)';
+      case 'acm': return 'linear-gradient(135deg, #e0e7ff, #c7d2fe)';
+      case 'hostel_committee': return 'linear-gradient(135deg, #e0f2fe, #ccfbf1)';
+      case 'vibin_z': return 'linear-gradient(135deg, #ffe4e6, #fecdd3)';
+      case 'iste': return 'linear-gradient(135deg, #f1f5f9, #cbd5e1)';
       default: return 'linear-gradient(135deg, #f1f5f9, #e2e8f0)';
     }
   };
@@ -59,7 +71,13 @@ export default function EventCard({ event, onClick }) {
           <div style={{ width: '100%', height: '100%', background: getGradientBackground(event.clubId) }} />
         )}
         
-        <span className={`event-status-badge ${status.toLowerCase()}`}>
+        {/* IndiaCollegeFest Style Date Badge Box */}
+        <div className="event-date-badge">
+          <span className="event-date-month">{month}</span>
+          <span className="event-date-day">{day}</span>
+        </div>
+
+        <span className={`event-status-badge ${status.toLowerCase().includes('live') ? 'live' : 'upcoming'}`}>
           {status}
         </span>
         
@@ -77,7 +95,7 @@ export default function EventCard({ event, onClick }) {
 
         <h3 className="event-card-title">{event.title}</h3>
 
-        <div className="event-info-row" style={{ marginTop: '0.8rem' }}>
+        <div className="event-info-row" style={{ marginTop: '0.6rem' }}>
           <Calendar size={14} />
           <span>{formatDate(event.date)}</span>
         </div>
@@ -95,11 +113,14 @@ export default function EventCard({ event, onClick }) {
         <div className="event-card-footer">
           <span className="registrations-count">
             <Users size={14} />
-            <span>{event.registrants ? event.registrants.length : 0} Registered</span>
+            <span>{event.registrants ? event.registrants.length : 0} Seats Booked</span>
           </span>
-          <button className="btn-card-action">View Details</button>
+          <button className="btn-card-action">
+            View Details <ArrowRight size={14} />
+          </button>
         </div>
       </div>
     </div>
   );
 }
+

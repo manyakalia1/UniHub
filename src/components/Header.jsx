@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LogIn, LogOut, LayoutDashboard, Calendar, Menu, X, Sun, Moon } from 'lucide-react';
+import { LogIn, LogOut, LayoutDashboard, Calendar, Menu, X, Sun, Moon, Info, Target, Smartphone } from 'lucide-react';
 
 export default function Header({ currentUser, onNavigate, activeTab, onLogout, theme = 'light', onToggleTheme }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,8 +30,8 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout, t
     <header className="header">
       <div className="header-container">
         <div className="logo-section" onClick={() => handleLinkClick('events')}>
-          <div className="logo-icon">U</div>
-          <span className="logo-text">UniHub</span>
+          <div className="logo-icon">E</div>
+          <span className="logo-text">EventSync</span>
         </div>
 
         {/* Desktop Navigation Link Panel */}
@@ -46,6 +46,32 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout, t
           >
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
               <Calendar size={16} /> Events
+            </span>
+          </a>
+
+          <a
+            href="#about"
+            className={`nav-link ${activeTab === 'about' ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick('about');
+            }}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+              <Info size={16} /> About Us
+            </span>
+          </a>
+
+          <a
+            href="#motto"
+            className={`nav-link ${activeTab === 'motto' ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick('motto');
+            }}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+              <Target size={16} /> Our Motto
             </span>
           </a>
 
@@ -132,6 +158,28 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout, t
             }}
           >
             <Calendar size={18} /> Events
+          </a>
+
+          <a
+            href="#about"
+            className={`mobile-nav-link ${activeTab === 'about' ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick('about');
+            }}
+          >
+            <Info size={18} /> About Us
+          </a>
+
+          <a
+            href="#motto"
+            className={`mobile-nav-link ${activeTab === 'motto' ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick('motto');
+            }}
+          >
+            <Target size={18} /> Our Motto
           </a>
 
           {currentUser ? (
