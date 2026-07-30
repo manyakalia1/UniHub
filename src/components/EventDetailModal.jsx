@@ -42,9 +42,37 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
       alert('Please fill in all required fields.');
       return;
     }
+
+    if (event.price && Number(event.price) > 0 && !formData.utr) {
+      alert('Please scan the QR code and enter your UPI Transaction/UTR Ref ID to claim your ticket.');
+      return;
+    }
     
+    // Save claimed ticket to local tickets array
+    const ticketCode = `TKT-${event.id.slice(0, 4).toUpperCase()}-${formData.roll.slice(-4) || '2026'}`;
+    const newTicket = {
+      ticketCode,
+      event,
+      studentName: formData.name,
+      rollNo: formData.roll,
+      branch: formData.branch,
+      year: formData.year,
+      email: formData.email,
+      phone: formData.phone,
+      utr: formData.utr || 'N/A (FREE ENTRY)',
+      paymentStatus: (event.price && Number(event.price) > 0) ? 'Paid & Verified' : 'Free Entry Pass',
+      claimedAt: new Date().toISOString()
+    };
+    try {
+      const existing = JSON.parse(localStorage.getItem('eventsync_my_tickets') || '[]');
+      const updated = [newTicket, ...existing.filter(t => t.event.id !== event.id)];
+      localStorage.setItem('eventsync_my_tickets', JSON.stringify(updated));
+    } catch (err) {
+      console.error('Error saving ticket:', err);
+    }
+
     // Register the student
-    onRegister(event.id, formData);
+    onRegister(event.id, { ...formData, paymentStatus: newTicket.paymentStatus });
     setIsSubmitted(true);
   };
 
@@ -204,6 +232,18 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
                 <p>{event.registrationType === 'internal' ? 'Registration Required' : 'External Register Link'}</p>
               </div>
             </div>
+
+            <div className="modal-info-item">
+              <div className="modal-info-icon-wrapper" style={{ color: (!event.price || event.price === 0 || event.price === 'Free') ? 'var(--accent-green)' : 'var(--color-brand)' }}>
+                <Ticket size={18} />
+              </div>
+              <div className="modal-info-details">
+                <h4>Ticket Fee / Price</h4>
+                <p style={{ fontWeight: 800, color: (!event.price || event.price === 0 || event.price === 'Free') ? 'var(--accent-green)' : 'var(--color-brand)' }}>
+                  {(!event.price || event.price === 0 || event.price === 'Free') ? 'FREE ENTRY (No Fee)' : `₹${event.price} / Pass`}
+                </p>
+              </div>
+            </div>
           </div>
 
           <h3 className="modal-section-title">About the Event</h3>
@@ -266,13 +306,89 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
             <h3 className="modal-section-title">Participate & Register</h3>
             
             {isSubmitted ? (
-              <div className="success-state">
-                <div className="success-icon-anim">
+              <div className="success-state" style={{ padding: '1rem 0' }}>
+                <div className="success-icon-anim" style={{ margin: '0 auto 0.5rem auto' }}>
                   <CheckCircle size={32} />
                 </div>
-                <h3>Registration Successful!</h3>
-                <p>You have successfully registered for <strong>{event.title}</strong>. A confirmation message code has been saved to the portal database.</p>
-                <button className="btn-secondary" onClick={onClose}>Close Window</button>
+                <h3 style={{ fontSize: '1.4rem', color: 'var(--text-primary)', margin: '0.2rem 0' }}>Ticket Claimed Successfully!</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', maxWidth: '500px', margin: '0 auto 1rem auto' }}>
+                  Here is your official digital entry pass for <strong>{event.title}</strong>. Present this ticket barcode at the venue entrance.
+                </p>
+
+                {/* Chitkara-Style Real Festival Entry Ticket Pass */}
+                <div className="ticket-card-wrapper" style={{ margin: '1rem 0', textAlign: 'left' }}>
+                  <div className="ticket-card-inner">
+                    
+                    {/* Left Stub */}
+                    <div className="ticket-stub">
+                      <div className="ticket-badge-pill" style={{ background: (!event.price || event.price === 0 || event.price === 'Free') ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ec4899, #8b5cf6)' }}>
+                        {(!event.price || event.price === 0 || event.price === 'Free') ? 'FREE PASS' : `₹${event.price} PASS`}
+                      </div>
+                      <div className="ticket-qr-box">
+                        <div className="barcode-bars">
+                          <div className="bar b1"></div><div className="bar b2"></div><div className="bar b3"></div>
+                          <div className="bar b1"></div><div className="bar b2"></div><div className="bar b1"></div>
+                          <div className="bar b3"></div><div className="bar b1"></div>
+                        </div>
+                        <span className="barcode-text">TKT-{event.id.slice(0, 4).toUpperCase()}-{formData.roll ? formData.roll.slice(-4) : '2026'}</span>
+                      </div>
+                      <div className="ticket-status-tag approved">
+                        <CheckCircle size={12} /> VERIFIED ENTRY
+                      </div>
+                    </div>
+
+                    {/* Tear Notch */}
+                    <div className="ticket-tear-notch top"></div>
+                    <div className="ticket-tear-notch bottom"></div>
+
+                    {/* Right Main Ticket Info */}
+                    <div className="ticket-main-info">
+                      <div className="ticket-brand">
+                        <span className="brand-logo-small">E</span>
+                        <span>EVENTSYNC DIGITAL PASS</span>
+                      </div>
+                      
+                      <h3 className="ticket-event-title">{event.title}</h3>
+                      <p className="ticket-club-subtitle">Organized by {event.clubName}</p>
+
+                      <div className="ticket-user-grid">
+                        <div>
+                          <span className="ticket-label">ATTENDEE NAME</span>
+                          <span className="ticket-val">{formData.name || 'Student Participant'}</span>
+                        </div>
+                        <div>
+                          <span className="ticket-label">STUDENT ROLL NO</span>
+                          <span className="ticket-val">{formData.roll || '2026CS1001'}</span>
+                        </div>
+                        <div>
+                          <span className="ticket-label">DATE & TIME</span>
+                          <span className="ticket-val">{event.date} • {event.time}</span>
+                        </div>
+                        <div>
+                          <span className="ticket-label">TICKET PRICE</span>
+                          <span className="ticket-val" style={{ color: (!event.price || event.price === 0 || event.price === 'Free') ? '#34d399' : '#818cf8' }}>
+                            {(!event.price || event.price === 0 || event.price === 'Free') ? 'FREE ENTRY' : `₹${event.price}`}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '0.8rem', marginTop: '1.2rem' }}>
+                  <button 
+                    type="button"
+                    className="btn-primary"
+                    onClick={() => exportEventToPDF(event, clubInfo)}
+                    style={{ padding: '0.6rem 1.4rem', borderRadius: '50px' }}
+                  >
+                    <Download size={16} /> Download PDF Ticket
+                  </button>
+                  <button type="button" className="btn-secondary" onClick={onClose} style={{ borderRadius: '50px' }}>
+                    Close Pass
+                  </button>
+                </div>
               </div>
             ) : event.registrationType === 'external' ? (
               <div style={{ textAlign: 'center', padding: '1.5rem 0' }}>
@@ -378,12 +494,55 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
                   </div>
                 </div>
 
+                {/* Scan & Pay QR Code Box for Paid Events */}
+                {event.price && Number(event.price) > 0 && (
+                  <div style={{
+                    background: 'rgba(15, 23, 42, 0.5)',
+                    border: '1px solid rgba(165, 180, 254, 0.3)',
+                    borderRadius: 'var(--radius-lg)',
+                    padding: '1.2rem',
+                    marginTop: '1.2rem',
+                    textAlign: 'center'
+                  }}>
+                    <h4 style={{ color: '#ffffff', fontSize: '1rem', fontWeight: 700, margin: '0 0 0.4rem 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                      💳 Step 2: Scan QR Code to Pay ₹{event.price} Ticket Fee
+                    </h4>
+                    <p style={{ color: '#cbd5e1', fontSize: '0.82rem', margin: '0 0 1rem 0' }}>
+                      Scan with Google Pay, PhonePe, Paytm, or any UPI app to complete payment.
+                    </p>
+                    
+                    <div style={{ display: 'inline-block', padding: '0.8rem', background: '#ffffff', borderRadius: 'var(--radius-md)', boxShadow: '0 8px 25px rgba(0,0,0,0.3)' }}>
+                      <img 
+                        src={event.paymentQr || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${event.clubId}@upi&pn=${encodeURIComponent(event.title)}&am=${event.price}&cu=INR`}
+                        alt="Club Payment QR Code" 
+                        style={{ width: '180px', height: '180px', display: 'block' }} 
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ marginTop: '1rem', textAlign: 'left' }}>
+                      <label className="form-label">Payment UTR / Transaction ID *</label>
+                      <input
+                        type="text"
+                        name="utr"
+                        className="form-input"
+                        required
+                        placeholder="Enter 12-digit UTR/UPI Transaction Ref Number"
+                        value={formData.utr || ''}
+                        onChange={handleInputChange}
+                      />
+                      <span style={{ fontSize: '0.75rem', color: '#94a3b8', display: 'block', marginTop: '0.2rem' }}>
+                        Found in your UPI app payment receipt after paying ₹{event.price}.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
                   <button type="button" className="btn-secondary" onClick={onClose}>
                     Cancel
                   </button>
                   <button type="submit" className="btn-primary">
-                    Submit Registration <ArrowRight size={16} />
+                    Claim Pass • {(!event.price || event.price === 0 || event.price === 'Free') ? 'FREE' : `₹${event.price}`} <ArrowRight size={16} />
                   </button>
                 </div>
               </form>

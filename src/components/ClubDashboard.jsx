@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { PlusCircle, FileText, Users, Trash2, Calendar, FileSpreadsheet, Send, Info, Settings, Plus } from 'lucide-react';
+import { CLUBS } from '../utils/mockData';
 
 export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, onDeleteEvent, onUpdateClub }) {
   const [activeSubTab, setActiveSubTab] = useState('manage');
@@ -17,10 +18,30 @@ export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, 
     poster: '',
     registrationType: 'internal',
     registrationLink: '',
-    responsesLink: ''
+    responsesLink: '',
+    price: 0,
+    paymentQr: ''
   });
 
-  const club = useMemo(() => clubs.find(c => c.id === clubId), [clubs, clubId]);
+  const club = useMemo(() => {
+    if (!clubId) return clubs[0] || CLUBS[0];
+    const targetId = String(clubId).toLowerCase().trim();
+    const foundInState = clubs.find(c => c.id.toLowerCase().trim() === targetId);
+    if (foundInState) return foundInState;
+    
+    const foundInMock = CLUBS.find(c => c.id.toLowerCase().trim() === targetId);
+    if (foundInMock) return foundInMock;
+
+    return {
+      id: clubId,
+      name: `${clubId.toUpperCase()} Society`,
+      logo: '🏫',
+      description: 'Official student chapter society.',
+      memberCount: 25,
+      accentColor: '#6366f1',
+      coreTeam: []
+    };
+  }, [clubs, clubId]);
 
   // Profile Editor States
   const [profileName, setProfileName] = useState(club?.name || '');
@@ -104,6 +125,8 @@ export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, 
       responsesLink: formData.registrationType === 'external' ? formData.responsesLink : '',
       status: 'pending', // Submits to Admin for review
       featured: false,
+      price: Number(formData.price) || 0,
+      paymentQr: formData.paymentQr || (Number(formData.price) > 0 ? `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=${club?.id || 'campus'}@upi&pn=${encodeURIComponent(club?.name || 'Event')}&am=${formData.price}&cu=INR` : ''),
       tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : ['Event'],
       poster: formData.poster || PRESET_POSTERS[0].url,
       registrants: []
@@ -125,7 +148,9 @@ export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, 
       poster: '',
       registrationType: 'internal',
       registrationLink: '',
-      responsesLink: ''
+      responsesLink: '',
+      price: 0,
+      paymentQr: ''
     });
     setActiveSubTab('manage');
   };
@@ -487,6 +512,42 @@ export default function ClubDashboard({ clubId, events, clubs = [], onAddEvent, 
                       External Link (Google Forms)
                     </label>
                   </div>
+                </div>
+
+                {/* Ticket Pricing & Payment QR Scanner Section */}
+                <div className="form-group-row" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.2rem', marginTop: '1.2rem' }}>
+                  <div className="form-group">
+                    <label className="form-label">Ticket Price (₹) *</label>
+                    <input
+                      type="number"
+                      name="price"
+                      className="form-input"
+                      min="0"
+                      placeholder="0 for FREE PASS, or enter price e.g. 99"
+                      value={formData.price}
+                      onChange={handleInputChange}
+                    />
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginTop: '0.2rem' }}>
+                      Enter 0 if event ticket is FREE. If paid, enter the ticket fee.
+                    </span>
+                  </div>
+
+                  {Number(formData.price) > 0 && (
+                    <div className="form-group">
+                      <label className="form-label">Payment QR Code Image URL / UPI ID *</label>
+                      <input
+                        type="text"
+                        name="paymentQr"
+                        className="form-input"
+                        placeholder="Paste UPI ID (e.g. clubname@upi) or QR image URL"
+                        value={formData.paymentQr}
+                        onChange={handleInputChange}
+                      />
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'block', marginTop: '0.2rem' }}>
+                        Students will scan this QR to pay ₹{formData.price} before claiming their entry pass.
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {formData.registrationType === 'external' && (

@@ -3,6 +3,7 @@ import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import EventGrid from './components/EventGrid';
 import EventDetailModal from './components/EventDetailModal';
+import MyPassesModal from './components/MyPassesModal';
 import Login from './components/Login';
 import ClubDashboard from './components/ClubDashboard';
 import AdminDashboard from './components/AdminDashboard';
@@ -10,6 +11,7 @@ import AboutUs from './components/AboutUs';
 import MottoSection from './components/MottoSection';
 import DeviceSimulator from './components/DeviceSimulator';
 import GenZLiveToast from './components/GenZLiveToast';
+import InteractiveFestBackground from './components/InteractiveFestBackground';
 import { INITIAL_EVENTS, INITIAL_NOTICES, CLUBS, CREDENTIALS } from './utils/mockData';
 import { getAPIEvents, getAPIClubs, getAPINotices, registerAPIEvent, createAPIEvent, updateAPIEventStatus } from './api/client';
 
@@ -19,6 +21,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('events');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMyPassesOpen, setIsMyPassesOpen] = useState(false);
   const [notices, setNotices] = useState([]);
   const [clubs, setClubs] = useState([]);
   const [theme, setTheme] = useState('light');
@@ -282,6 +285,7 @@ export default function App() {
 
   return (
     <div className="app-container">
+      <InteractiveFestBackground />
       <Header
         currentUser={currentUser}
         activeTab={activeTab}
@@ -289,6 +293,7 @@ export default function App() {
         onLogout={handleLogout}
         theme={theme}
         onToggleTheme={handleToggleTheme}
+        onOpenMyPasses={() => setIsMyPassesOpen(true)}
       />
 
       <main className="main-content">
@@ -378,6 +383,15 @@ export default function App() {
         isOpen={isModalOpen}
         onClose={handleCloseDetailModal}
         onRegister={handleRegisterStudent}
+      />
+
+      {/* Chitkara-Style My Passes & Tickets Vault Modal */}
+      <MyPassesModal
+        isOpen={isMyPassesOpen}
+        onClose={() => setIsMyPassesOpen(false)}
+        events={events}
+        clubs={clubs}
+        onSelectEvent={handleOpenDetailModal}
       />
     </div>
   );

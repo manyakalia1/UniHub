@@ -156,6 +156,7 @@ export const INITIAL_EVENTS = [
     registrationType: 'internal',
     status: 'approved',
     featured: true,
+    price: 0, // FREE PASS
     tags: ['Coding', 'Hackathon', 'Prizes'],
     poster: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
     registrants: [
@@ -177,6 +178,7 @@ export const INITIAL_EVENTS = [
     registrationType: 'internal',
     status: 'approved',
     featured: true,
+    price: 0, // FREE PASS
     tags: ['Music', 'Jamming', 'Acoustic'],
     poster: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
     registrants: [
@@ -198,6 +200,7 @@ export const INITIAL_EVENTS = [
     registrationLink: 'https://forms.gle/mockstreetplay2026',
     status: 'approved',
     featured: false,
+    price: 0, // FREE PASS
     tags: ['Drama', 'Nukkad Natak', 'Social Issue'],
     poster: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80',
     registrants: []
@@ -212,10 +215,12 @@ export const INITIAL_EVENTS = [
     time: '10:00',
     duration: '6 Hours',
     venue: 'Seminar Hall 2, Block A',
-    criteria: 'Prior registration mandatory. Fee: ₹100 per team (kit cost included).',
+    criteria: 'Prior registration mandatory. Fee: ₹99 per team (kit cost included).',
     registrationType: 'internal',
     status: 'approved',
     featured: false,
+    price: 99, // ₹99 PASS
+    paymentQr: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=ieeeclub@okaxis&pn=IEEE%20IoT%20Workshop&am=99&cu=INR',
     tags: ['IoT', 'Arduino', 'Workshop'],
     poster: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
     registrants: [

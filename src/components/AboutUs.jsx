@@ -12,7 +12,7 @@ export default function AboutUs({ onNavigate }) {
   const team = [
     {
       name: 'Manya Kalia',
-      role: 'CEO & Sole Founder (The One & Only)',
+      role: 'Founder & CEO',
       icon: <Crown size={32} color="#ec4899" />,
       bio: 'The visionary leader behind EventSync. Passionate about technology, digital transformation, and empowering student societies with seamless campus solutions under RM Enterprises.',
       tag: 'Founder & CEO',

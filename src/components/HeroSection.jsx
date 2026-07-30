@@ -181,10 +181,10 @@ export default function HeroSection({
         {/* Visual Workflow Steps */}
         <div className="workflow-section">
           <div style={{ textAlign: 'center', marginBottom: '1.8rem' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--color-brand)' }}>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1.2px', color: '#818cf8' }}>
               How EventSync Works
             </span>
-            <h2 style={{ fontSize: '1.5rem', marginTop: '0.2rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+            <h2 className="workflow-title" style={{ fontSize: '1.5rem', marginTop: '0.3rem', fontWeight: 800, color: '#ffffff' }}>
               4 Easy Steps to Participate in Campus Fests
             </h2>
           </div>

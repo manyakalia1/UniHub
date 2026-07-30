@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { LogIn, LogOut, LayoutDashboard, Calendar, Menu, X, Sun, Moon, Info, Target, Smartphone } from 'lucide-react';
+import { LogIn, LogOut, LayoutDashboard, Calendar, Menu, X, Sun, Moon, Info, Target, Smartphone, Ticket } from 'lucide-react';
 
-export default function Header({ currentUser, onNavigate, activeTab, onLogout, theme = 'light', onToggleTheme }) {
+export default function Header({ currentUser, onNavigate, activeTab, onLogout, theme = 'light', onToggleTheme, onOpenMyPasses }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const getRoleDotClass = (role) => {
@@ -74,6 +74,28 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout, t
               <Target size={16} /> Our Motto
             </span>
           </a>
+
+          <button
+            className="nav-link"
+            onClick={(e) => {
+              e.preventDefault();
+              onOpenMyPasses();
+              setIsMenuOpen(false);
+            }}
+            style={{ 
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2))', 
+              color: 'var(--text-primary)', 
+              fontWeight: 700, 
+              border: '1px solid rgba(99, 102, 241, 0.4)',
+              borderRadius: '9999px',
+              padding: '0.4rem 0.9rem',
+              cursor: 'pointer'
+            }}
+          >
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+              <Ticket size={15} style={{ color: 'var(--color-brand)' }} /> My Passes
+            </span>
+          </button>
 
           {currentUser ? (
             <>
@@ -181,6 +203,28 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout, t
           >
             <Target size={18} /> Our Motto
           </a>
+
+          <button
+            className="mobile-nav-link"
+            onClick={(e) => {
+              e.preventDefault();
+              onOpenMyPasses();
+              setIsMenuOpen(false);
+            }}
+            style={{ 
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2))', 
+              color: 'var(--text-primary)', 
+              fontWeight: 700, 
+              border: '1px solid rgba(99, 102, 241, 0.4)',
+              width: '100%',
+              textAlign: 'left',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.6rem'
+            }}
+          >
+            <Ticket size={18} style={{ color: 'var(--color-brand)' }} /> My Digital Passes
+          </button>
 
           {currentUser ? (
             <>

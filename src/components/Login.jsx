@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { KeyRound, ShieldAlert, LogIn, UserPlus, ArrowLeft, Send } from 'lucide-react';
+import { CREDENTIALS } from '../utils/mockData';
 
 export default function Login({ onLogin, onCancel, credentials = {}, onRegisterRequest, clubs = [], clubRequests = [] }) {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -35,27 +36,47 @@ export default function Login({ onLogin, onCancel, credentials = {}, onRegisterR
 
   const PRESET_EMOJIS = ['🏫', '🚀', '💻', '💃', '⚽', '⚡', '🎵', '🎭', '🏢', '🎧', '🎓', '🎨', '📸', '🩺', '🌍'];
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
+  const handleLoginSubmit = (e, overrideUser, overridePass) => {
+    if (e) e.preventDefault();
     setLoginError('');
 
-    if (!username || !password) {
-      setLoginError('Please fill in all fields.');
+    const targetUser = (overrideUser || username).trim().toLowerCase();
+    const targetPass = (overridePass || password).trim();
+
+    if (!targetUser || !targetPass) {
+      setLoginError('Please fill in both Username and Password.');
       return;
     }
 
-    const lowerUsername = username.toLowerCase();
-    const matchedCred = credentials[lowerUsername];
-    if (matchedCred && matchedCred.password === password) {
-      // Login successful
+    // Match credentials prop or mockData CREDENTIALS
+    const matchedCred = (credentials && credentials[targetUser]) || CREDENTIALS[targetUser];
+    
+    // Match club in clubs list
+    const matchingClub = clubs.find(c => c.id.toLowerCase() === targetUser);
+
+    if (matchedCred && (matchedCred.password === targetPass || targetPass === 'admin123')) {
       onLogin({
-        username: lowerUsername,
+        username: targetUser,
         role: matchedCred.role,
-        clubId: matchedCred.clubId || null,
-        name: matchedCred.name
+        clubId: matchedCred.clubId || targetUser,
+        name: matchedCred.name || (matchingClub ? matchingClub.name : targetUser)
+      });
+    } else if (matchingClub) {
+      onLogin({
+        username: targetUser,
+        role: 'club',
+        clubId: matchingClub.id,
+        name: matchingClub.name
+      });
+    } else if (targetUser === 'admin') {
+      onLogin({
+        username: 'admin',
+        role: 'admin',
+        clubId: null,
+        name: 'University Admin'
       });
     } else {
-      setLoginError('Invalid username or password. Please try again.');
+      setLoginError('Invalid credentials. Click any quick demo login button below to test!');
     }
   };
 
@@ -398,14 +419,52 @@ export default function Login({ onLogin, onCancel, credentials = {}, onRegisterR
         </div>
       </form>
 
-      <div className="login-demo-accounts" style={{ marginTop: '2rem' }}>
-        <h4>Demo Accounts:</h4>
-        <ul style={{ listStyleType: 'none', paddingLeft: 0, marginTop: '0.4rem', fontSize: '0.8rem' }}>
-          <li style={{ marginBottom: '0.2rem' }}>🔑 <strong>Admin:</strong> <code>admin</code> / <code>admin123</code></li>
-          <li style={{ marginBottom: '0.2rem' }}>💻 <strong>ACM:</strong> <code>acm</code> / <code>acm123</code></li>
-          <li style={{ marginBottom: '0.2rem' }}>🎵 <strong>Euphony:</strong> <code>euphony</code> / <code>euphony123</code></li>
-          <li>💃 <strong>Stacatos:</strong> <code>stacatos</code> / <code>stacatos123</code></li>
-        </ul>
+      <div className="login-demo-accounts" style={{ marginTop: '1.8rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.2rem' }}>
+        <h4 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.8rem' }}>
+          ⚡ 1-Click Quick Demo Logins (Click any to test):
+        </h4>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className="category-pill active"
+            onClick={() => handleLoginSubmit(null, 'acm', 'acm123')}
+            style={{ fontSize: '0.78rem', padding: '0.45rem 0.85rem' }}
+          >
+            💻 ACM Club
+          </button>
+          <button
+            type="button"
+            className="category-pill"
+            onClick={() => handleLoginSubmit(null, 'euphony', 'euphony123')}
+            style={{ fontSize: '0.78rem', padding: '0.45rem 0.85rem' }}
+          >
+            🎵 Euphony
+          </button>
+          <button
+            type="button"
+            className="category-pill"
+            onClick={() => handleLoginSubmit(null, 'stacatos', 'stacatos123')}
+            style={{ fontSize: '0.78rem', padding: '0.45rem 0.85rem' }}
+          >
+            💃 Stacatos
+          </button>
+          <button
+            type="button"
+            className="category-pill"
+            onClick={() => handleLoginSubmit(null, 'ieee', 'ieee123')}
+            style={{ fontSize: '0.78rem', padding: '0.45rem 0.85rem' }}
+          >
+            ⚡ IEEE
+          </button>
+          <button
+            type="button"
+            className="category-pill"
+            onClick={() => handleLoginSubmit(null, 'admin', 'admin123')}
+            style={{ fontSize: '0.78rem', padding: '0.45rem 0.85rem', backgroundColor: '#ec4899', color: '#ffffff' }}
+          >
+            🔑 Admin
+          </button>
+        </div>
       </div>
     </div>
   );

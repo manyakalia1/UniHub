@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Clock, MapPin, Users, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, Ticket } from 'lucide-react';
 
 export default function EventCard({ event, onClick }) {
   const getStatusText = (eventDate) => {
@@ -77,7 +77,12 @@ export default function EventCard({ event, onClick }) {
           <span className="event-date-day">{day}</span>
         </div>
 
-        <span className={`event-status-badge ${status.toLowerCase().includes('live') ? 'live' : 'upcoming'}`}>
+        {/* Ticket Price Badge (FREE TICKET vs ₹XX TICKET) */}
+        <span className={`event-price-badge ${(!event.price || event.price === 0 || event.price === 'Free') ? 'free' : 'paid'}`}>
+          {(!event.price || event.price === 0 || event.price === 'Free') ? '🎟️ FREE TICKET' : `🎟️ ₹${event.price} TICKET`}
+        </span>
+
+        <span className={`event-status-badge ${status.toLowerCase().includes('live') ? 'live' : 'upcoming'}`} style={{ right: 'auto', left: '4.8rem' }}>
           {status}
         </span>
         
@@ -115,8 +120,8 @@ export default function EventCard({ event, onClick }) {
             <Users size={14} />
             <span>{event.registrants ? event.registrants.length : 0} Seats Booked</span>
           </span>
-          <button className="btn-card-action">
-            View Details <ArrowRight size={14} />
+          <button className="btn-card-action" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+            <Ticket size={14} /> Get Ticket • {(!event.price || event.price === 0 || event.price === 'Free') ? 'FREE' : `₹${event.price}`}
           </button>
         </div>
       </div>
