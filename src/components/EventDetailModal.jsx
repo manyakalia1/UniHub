@@ -12,15 +12,17 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
     phone: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [hasAlreadyClaimed, setHasAlreadyClaimed] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
 
   React.useEffect(() => {
     if (isOpen && event) {
+      setIsSubmitted(false);
       try {
         const existing = JSON.parse(localStorage.getItem('eventsync_my_tickets') || '[]');
         const matched = existing.find(t => t.event && t.event.id === event.id);
         if (matched) {
-          setIsSubmitted(true);
+          setHasAlreadyClaimed(true);
           setFormData({
             name: matched.studentName || '',
             roll: matched.rollNo || '',
@@ -31,7 +33,7 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
             utr: matched.utr || ''
           });
         } else {
-          setIsSubmitted(false);
+          setHasAlreadyClaimed(false);
           setFormData({
             name: '',
             roll: '',
@@ -43,6 +45,7 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
           });
         }
       } catch (e) {
+        setHasAlreadyClaimed(false);
         setIsSubmitted(false);
       }
     }
@@ -99,24 +102,27 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
     };
     try {
       const existing = JSON.parse(localStorage.getItem('eventsync_my_tickets') || '[]');
-      const updated = [newTicket, ...existing.filter(t => t.event.id !== event.id)];
-      localStorage.setItem('eventsync_my_tickets', JSON.stringify(updated));
+      const filtered = existing.filter(t => t.event.id !== event.id);
+      localStorage.setItem('eventsync_my_tickets', JSON.stringify([newTicket, ...filtered]));
     } catch (err) {
-      console.error('Error saving ticket:', err);
+      console.error('Failed to save ticket to localStorage:', err);
     }
 
-    // Register the student
-    onRegister(event.id, { ...formData, paymentStatus: newTicket.paymentStatus });
     setIsSubmitted(true);
+    setHasAlreadyClaimed(true);
+    if (onRegister) {
+      onRegister(event.id, formData);
+    }
   };
 
   const formatDate = (dateStr) => {
+    if (!dateStr) return '';
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
+      day: 'numeric'
     });
   };
 
@@ -158,6 +164,40 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
         )}
 
         <div className="modal-body">
+          {hasAlreadyClaimed && !isSubmitted && (
+            <div style={{
+              background: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid #10b981',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.8rem 1rem',
+              marginBottom: '1.2rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '0.8rem'
+            }}>
+              <span style={{ color: '#34d399', fontSize: '0.88rem', fontWeight: 600 }}>
+                🎉 You have already registered for this event!
+              </span>
+              <button 
+                type="button" 
+                onClick={() => setIsSubmitted(true)}
+                style={{
+                  background: '#10b981',
+                  color: '#ffffff',
+                  border: 'none',
+                  padding: '0.4rem 0.9rem',
+                  borderRadius: '50px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                View My Ticket Pass
+              </button>
+            </div>
+          )}
           <div className="modal-header-info">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
               <div style={{ flex: '1', minWidth: '200px' }}>
