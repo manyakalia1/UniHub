@@ -55,7 +55,13 @@ export default function EventCard({ event, onClick }) {
   };
 
   return (
-    <div className="event-card" onClick={onClick}>
+    <div 
+      className="event-card" 
+      onClick={(e) => {
+        if (onClick) onClick(event);
+      }}
+      style={{ cursor: 'pointer' }}
+    >
       <div className="event-poster-wrapper">
         {event.poster ? (
           <img 
@@ -120,7 +126,14 @@ export default function EventCard({ event, onClick }) {
             <Users size={14} />
             <span>{event.registrants ? event.registrants.length : 0} Seats Booked</span>
           </span>
-          <button className="btn-card-action" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+          <button 
+            className="btn-card-action" 
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onClick) onClick(event);
+            }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer' }}
+          >
             <Ticket size={14} /> Get Ticket • {(!event.price || event.price === 0 || event.price === 'Free') ? 'FREE' : `₹${event.price}`}
           </button>
         </div>

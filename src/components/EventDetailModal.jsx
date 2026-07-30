@@ -14,6 +14,40 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
 
+  React.useEffect(() => {
+    if (isOpen && event) {
+      try {
+        const existing = JSON.parse(localStorage.getItem('eventsync_my_tickets') || '[]');
+        const matched = existing.find(t => t.event && t.event.id === event.id);
+        if (matched) {
+          setIsSubmitted(true);
+          setFormData({
+            name: matched.studentName || '',
+            roll: matched.rollNo || '',
+            branch: matched.branch || '',
+            year: matched.year || '1st Year',
+            email: matched.email || '',
+            phone: matched.phone || '',
+            utr: matched.utr || ''
+          });
+        } else {
+          setIsSubmitted(false);
+          setFormData({
+            name: '',
+            roll: '',
+            branch: '',
+            year: '1st Year',
+            email: '',
+            phone: '',
+            utr: ''
+          });
+        }
+      } catch (e) {
+        setIsSubmitted(false);
+      }
+    }
+  }, [isOpen, event?.id]);
+
   if (!isOpen || !event) return null;
 
   const clubInfo = clubs.find(c => c.id === event.clubId);
