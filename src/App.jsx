@@ -221,11 +221,12 @@ export default function App() {
 
   // Student registers for an event
   const handleRegisterStudent = (eventId, studentData) => {
+    if (!eventId || !studentData) return;
     const updatedEvents = events.map((event) => {
-      if (event.id === eventId) {
+      if (String(event.id) === String(eventId)) {
         const registrants = event.registrants ? [...event.registrants] : [];
-        // Check for duplicates
-        const alreadyExists = registrants.some(r => r.roll.toLowerCase() === studentData.roll.toLowerCase());
+        const studentRoll = String(studentData.roll || '').toLowerCase();
+        const alreadyExists = registrants.some(r => r && r.roll && String(r.roll).toLowerCase() === studentRoll);
         if (!alreadyExists) {
           registrants.push(studentData);
         }
