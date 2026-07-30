@@ -22,7 +22,7 @@ export default function MyPassesModal({ isOpen, onClose, events = [], clubs = []
       if (event.registrants && event.registrants.length > 0) {
         event.registrants.forEach(reg => {
           claimed.push({
-            ticketCode: `TKT-${event.id.slice(0, 4).toUpperCase()}-${reg.roll ? reg.roll.slice(-4) : '2026'}`,
+            ticketCode: `TKT-${String(event.id || 'EVT').slice(0, 4).toUpperCase()}-${reg.roll ? reg.roll.slice(-4) : '2026'}`,
             event,
             studentName: reg.name,
             rollNo: reg.roll,

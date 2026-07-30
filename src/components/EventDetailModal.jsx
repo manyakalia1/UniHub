@@ -86,7 +86,8 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
     }
     
     // Save claimed ticket to local tickets array
-    const ticketCode = `TKT-${event.id.slice(0, 4).toUpperCase()}-${formData.roll.slice(-4) || '2026'}`;
+    const eventIdStr = String(event.id || 'EVT');
+    const ticketCode = `TKT-${eventIdStr.slice(0, 4).toUpperCase()}-${(formData.roll || '2026').slice(-4)}`;
     const newTicket = {
       ticketCode,
       event,
@@ -102,7 +103,7 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
     };
     try {
       const existing = JSON.parse(localStorage.getItem('eventsync_my_tickets') || '[]');
-      const filtered = existing.filter(t => t.event.id !== event.id);
+      const filtered = existing.filter(t => t.event && String(t.event.id) !== String(event.id));
       localStorage.setItem('eventsync_my_tickets', JSON.stringify([newTicket, ...filtered]));
     } catch (err) {
       console.error('Failed to save ticket to localStorage:', err);
@@ -404,7 +405,7 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
                           <div className="bar b1"></div><div className="bar b2"></div><div className="bar b1"></div>
                           <div className="bar b3"></div><div className="bar b1"></div>
                         </div>
-                        <span className="barcode-text">TKT-{event.id.slice(0, 4).toUpperCase()}-{formData.roll ? formData.roll.slice(-4) : '2026'}</span>
+                        <span className="barcode-text">TKT-{String(event.id || 'EVT').slice(0, 4).toUpperCase()}-{formData.roll ? formData.roll.slice(-4) : '2026'}</span>
                       </div>
                       <div className="ticket-status-tag approved">
                         <CheckCircle size={12} /> VERIFIED ENTRY
