@@ -10,7 +10,10 @@ export default function MyPassesModal({ isOpen, onClose, events = [], clubs = []
     try {
       const savedTickets = localStorage.getItem('eventsync_my_tickets');
       if (savedTickets) {
-        return JSON.parse(savedTickets);
+        const parsed = JSON.parse(savedTickets);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(t => t && (t.event || t.ticketCode));
+        }
       }
     } catch (e) {
       console.error('Failed to load my tickets:', e);

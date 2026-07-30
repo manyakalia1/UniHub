@@ -19,13 +19,19 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
     if (isOpen && event) {
       setIsSubmitted(false);
       try {
-        const existing = JSON.parse(localStorage.getItem('eventsync_my_tickets') || '[]');
-        const matched = existing.find(t => t.event && t.event.id === event.id);
+        const raw = localStorage.getItem('eventsync_my_tickets');
+        const existing = raw ? JSON.parse(raw) : [];
+        const matched = Array.isArray(existing) ? existing.find(t => {
+          if (!t) return false;
+          const tId = t.event ? t.event.id : t.eventId;
+          return String(tId) === String(event.id);
+        }) : null;
+
         if (matched) {
           setHasAlreadyClaimed(true);
           setFormData({
-            name: matched.studentName || '',
-            roll: matched.rollNo || '',
+            name: matched.studentName || matched.name || '',
+            roll: matched.rollNo || matched.roll || '',
             branch: matched.branch || '',
             year: matched.year || '1st Year',
             email: matched.email || '',
@@ -45,6 +51,7 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
           });
         }
       } catch (e) {
+        console.error('Error loading ticket from storage:', e);
         setHasAlreadyClaimed(false);
         setIsSubmitted(false);
       }
