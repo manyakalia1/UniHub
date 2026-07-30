@@ -321,63 +321,8 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
             </div>
           </div>
 
-          <h3 className="modal-section-title">About the Event</h3>
-          <p className="modal-desc-text">{event.description}</p>
-
-          <h3 className="modal-section-title">Eligibility & Criteria</h3>
-          <div className="modal-criteria-box">
-            <strong>Important Guidelines:</strong>
-            {event.criteria}
-          </div>
-
-          {/* Host Club & Core Team section */}
-          {clubInfo && (
-            <div style={{ 
-              marginTop: '1.5rem', 
-              padding: '1.2rem', 
-              borderRadius: 'var(--radius-lg)', 
-              border: '1px solid var(--border-color)', 
-              backgroundColor: 'var(--bg-tertiary)' 
-            }}>
-              <h3 className="modal-section-title" style={{ marginTop: '0', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '1rem' }}>
-                Organizing Club Details
-              </h3>
-              <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', marginBottom: '0.8rem' }}>
-                <span style={{ fontSize: '1.8rem' }}>{clubInfo.logo}</span>
-                <div>
-                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>{clubInfo.name}</h4>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>Active Members: {clubInfo.memberCount}</p>
-                </div>
-              </div>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.45', marginBottom: '1rem' }}>
-                {clubInfo.description}
-              </p>
-
-              {clubInfo.coreTeam && clubInfo.coreTeam.length > 0 && (
-                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.8rem' }}>
-                  <h5 style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-secondary)' }}>
-                    Core Organizing Team
-                  </h5>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.6rem' }}>
-                    {clubInfo.coreTeam.map((member, idx) => (
-                      <div key={idx} style={{ 
-                        padding: '0.45rem 0.6rem', 
-                        borderRadius: 'var(--radius-sm)', 
-                        backgroundColor: 'var(--bg-secondary)', 
-                        border: '1px solid var(--border-color)' 
-                      }}>
-                        <p style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>{member.name}</p>
-                        <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0 }}>{member.role}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Registration Section */}
-          <div className="registration-container">
+          {/* Registration Section Front & Center */}
+          <div className="registration-container" style={{ marginTop: '1.2rem', paddingTop: '1.2rem' }}>
             <h3 className="modal-section-title">Participate & Register</h3>
             
             {isSubmitted ? (
@@ -623,6 +568,61 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
               </form>
             )}
           </div>
+
+          <h3 className="modal-section-title" style={{ marginTop: '2rem' }}>About the Event</h3>
+          <p className="modal-desc-text">{event.description}</p>
+
+          <h3 className="modal-section-title">Eligibility & Criteria</h3>
+          <div className="modal-criteria-box">
+            <strong>Important Guidelines:</strong>
+            {event.criteria}
+          </div>
+
+          {/* Host Club & Core Team section */}
+          {clubInfo && (
+            <div style={{ 
+              marginTop: '1.5rem', 
+              padding: '1.2rem', 
+              borderRadius: 'var(--radius-lg)', 
+              border: '1px solid var(--border-color)', 
+              backgroundColor: 'var(--bg-tertiary)' 
+            }}>
+              <h3 className="modal-section-title" style={{ marginTop: '0', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '1rem' }}>
+                Organizing Club Details
+              </h3>
+              <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', marginBottom: '0.8rem' }}>
+                <span style={{ fontSize: '1.8rem' }}>{clubInfo.logo}</span>
+                <div>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>{clubInfo.name}</h4>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>Active Members: {clubInfo.memberCount}</p>
+                </div>
+              </div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.45', marginBottom: '1rem' }}>
+                {clubInfo.description}
+              </p>
+
+              {clubInfo.coreTeam && clubInfo.coreTeam.length > 0 && (
+                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.8rem' }}>
+                  <h5 style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-secondary)' }}>
+                    Core Organizing Team
+                  </h5>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.6rem' }}>
+                    {clubInfo.coreTeam.map((member, idx) => (
+                      <div key={idx} style={{ 
+                        padding: '0.45rem 0.6rem', 
+                        borderRadius: 'var(--radius-sm)', 
+                        backgroundColor: 'var(--bg-secondary)', 
+                        border: '1px solid var(--border-color)' 
+                      }}>
+                        <p style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>{member.name}</p>
+                        <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: 0 }}>{member.role}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
