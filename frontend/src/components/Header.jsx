@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { LogIn, LogOut, LayoutDashboard, Calendar, Menu, X, Sun, Moon, Info, Target, Smartphone, Ticket } from 'lucide-react';
 
-export default function Header({ currentUser, onNavigate, activeTab, onLogout, theme = 'light', onToggleTheme, onOpenMyPasses }) {
+export default function Header({ currentUser, onNavigate, activeTab, onLogout, theme = 'light', onToggleTheme, onOpenMyPasses, onOpenGetFreeTicket }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const getRoleDotClass = (role) => {
@@ -74,6 +74,32 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout, t
               <Target size={16} /> Our Motto
             </span>
           </a>
+
+          {/* Get Free Ticket Primary Action Tab */}
+          <button
+            className="nav-link nav-btn-ticket"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onOpenGetFreeTicket) onOpenGetFreeTicket();
+              setIsMenuOpen(false);
+            }}
+            style={{ 
+              background: 'linear-gradient(135deg, #10b981, #059669)', 
+              color: '#ffffff', 
+              fontWeight: 700, 
+              border: 'none',
+              borderRadius: '9999px',
+              padding: '0.45rem 1.05rem',
+              cursor: 'pointer',
+              boxShadow: '0 4px 14px rgba(16, 185, 129, 0.35)',
+              transition: 'all 0.2s ease',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem'
+            }}
+          >
+            <Ticket size={16} /> Get Free Ticket
+          </button>
 
           <button
             className="nav-link"
@@ -203,6 +229,31 @@ export default function Header({ currentUser, onNavigate, activeTab, onLogout, t
           >
             <Target size={18} /> Our Motto
           </a>
+
+          <button
+            className="mobile-nav-link"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onOpenGetFreeTicket) onOpenGetFreeTicket();
+              setIsMenuOpen(false);
+            }}
+            style={{ 
+              background: 'linear-gradient(135deg, #10b981, #059669)', 
+              color: '#ffffff', 
+              fontWeight: 700, 
+              border: 'none',
+              borderRadius: '8px',
+              width: '100%',
+              textAlign: 'left',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              padding: '0.65rem 1rem',
+              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.25)'
+            }}
+          >
+            <Ticket size={18} /> Get Free Ticket
+          </button>
 
           <button
             className="mobile-nav-link"

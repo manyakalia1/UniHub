@@ -17,8 +17,18 @@ export default class ErrorBoundary extends React.Component {
   handleReset = () => {
     try {
       localStorage.clear();
+      sessionStorage.clear();
     } catch (e) {}
+    this.setState({ hasError: false, error: null });
     window.location.reload();
+  };
+
+  handleRecover = () => {
+    try {
+      localStorage.removeItem('eventsync_my_tickets');
+      localStorage.removeItem('eventsync_events_v8');
+    } catch (e) {}
+    this.setState({ hasError: false, error: null });
   };
 
   render() {
@@ -38,16 +48,31 @@ export default class ErrorBoundary extends React.Component {
         }}>
           <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>⚡</div>
           <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: '0 0 0.5rem 0' }}>
-            EventSync Refresh Required
+            EventSync Session Restored
           </h1>
           <p style={{ color: '#cbd5e1', fontSize: '1rem', maxWidth: '500px', marginBottom: '2rem' }}>
-            A temporary browser session discrepancy was detected. Click below to clear state and restore live campus events.
+            A temporary session discrepancy was detected. Click below to clear state and restore live campus events.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          {this.state.error && (
+            <div style={{
+              background: 'rgba(239, 68, 68, 0.15)',
+              border: '1px solid #ef4444',
+              borderRadius: '8px',
+              padding: '0.6rem 1rem',
+              color: '#f87171',
+              fontSize: '0.8rem',
+              marginBottom: '1.5rem',
+              maxWidth: '600px',
+              wordBreak: 'break-word'
+            }}>
+              {String(this.state.error.message || this.state.error)}
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
             <button
-              onClick={() => window.location.reload()}
+              onClick={this.handleRecover}
               style={{
-                background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                background: 'linear-gradient(135deg, #10b981, #059669)',
                 color: '#ffffff',
                 border: 'none',
                 padding: '0.75rem 1.8rem',
@@ -55,10 +80,10 @@ export default class ErrorBoundary extends React.Component {
                 fontSize: '0.95rem',
                 fontWeight: 700,
                 cursor: 'pointer',
-                boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)'
+                boxShadow: '0 8px 25px rgba(16, 185, 129, 0.4)'
               }}
             >
-              Reload Page
+              Restore App & Open Events
             </button>
             <button
               onClick={this.handleReset}

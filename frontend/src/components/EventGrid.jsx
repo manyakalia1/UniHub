@@ -4,7 +4,7 @@ import HeroSection from './HeroSection';
 import ExploreCategories from './ExploreCategories';
 import { Search, Compass, Users } from 'lucide-react';
 
-export default function EventGrid({ events, stats, notices = [], clubs = [], onEventClick }) {
+export default function EventGrid({ events, stats, notices = [], clubs = [], onEventClick, onOpenGetFreeTicket }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClub, setSelectedClub] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -90,6 +90,7 @@ export default function EventGrid({ events, stats, notices = [], clubs = [], onE
         onSearchChange={setSearchQuery}
         selectedCategory={selectedCategory}
         onCategorySelect={setSelectedCategory}
+        onOpenGetFreeTicket={onOpenGetFreeTicket}
       />
 
       {/* Explore by Event Type Category Showcase */}
