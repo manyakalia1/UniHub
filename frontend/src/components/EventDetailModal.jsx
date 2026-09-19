@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { X, Calendar, Clock, MapPin, Award, CheckCircle, ExternalLink, ArrowRight, Download } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, Award, CheckCircle, ExternalLink, ArrowRight, Download, Ticket } from 'lucide-react';
 import { exportEventToPDF } from '../utils/pdfGenerator';
 
-export default function EventDetailModal({ event, clubs = [], isOpen, onClose, onRegister }) {
+export default function EventDetailModal({ event, clubs = [], isOpen, onClose, onRegister, allEvents = [], onSelectEvent }) {
   const [formData, setFormData] = useState({
     name: '',
     roll: '',
@@ -14,10 +14,14 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [hasAlreadyClaimed, setHasAlreadyClaimed] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   React.useEffect(() => {
     if (isOpen && event) {
       setIsSubmitted(false);
+      setPhoneError('');
+      setEmailError('');
       try {
         const raw = localStorage.getItem('eventsync_my_tickets');
         const existing = raw ? JSON.parse(raw) : [];
@@ -58,9 +62,9 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
     }
   }, [isOpen, event?.id]);
 
-  if (!isOpen || !event) return null;
+  if (!isOpen || !event || !event.id) return null;
 
-  const clubInfo = clubs.find(c => c.id === event.clubId);
+  const clubInfo = clubs && Array.isArray(clubs) && event.clubId ? clubs.find(c => c && c.id === event.clubId) : null;
 
   const handleShareClick = () => {
     const shareUrl = `${window.location.origin}${window.location.pathname}?event=${event.id}`;
@@ -74,6 +78,43 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'phone') {
+      // Strictly keep numbers only and limit to max 10 digits
+      const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
+      setFormData((prev) => ({
+        ...prev,
+        phone: digitsOnly
+      }));
+      if (digitsOnly.length > 0 && digitsOnly.length < 10) {
+        setPhoneError(`Phone number must be exactly 10 digits (${digitsOnly.length}/10).`);
+      } else {
+        setPhoneError('');
+      }
+      return;
+    }
+
+    if (name === 'email') {
+      const emailVal = value.trim();
+      setFormData((prev) => ({
+        ...prev,
+        email: emailVal
+      }));
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailVal.length > 0) {
+        if (!emailVal.includes('@')) {
+          setEmailError('Email must contain "@" symbol (e.g. rahul@univ.edu).');
+        } else if (!emailRegex.test(emailVal)) {
+          setEmailError('Please enter a complete email address with domain (e.g. .com, .edu, .in).');
+        } else {
+          setEmailError('');
+        }
+      } else {
+        setEmailError('');
+      }
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: value
@@ -84,6 +125,21 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
     e.preventDefault();
     if (!formData.name || !formData.roll || !formData.email || !formData.phone) {
       alert('Please fill in all required fields.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const cleanEmail = (formData.email || '').trim();
+    if (!cleanEmail.includes('@') || !emailRegex.test(cleanEmail)) {
+      setEmailError('Please enter a valid Email ID containing "@" and a domain name (e.g. rahul@univ.edu).');
+      alert('⚠️ Invalid Email ID! Email must contain "@" symbol and a valid domain name (e.g. rahul@univ.edu).');
+      return;
+    }
+
+    const cleanPhone = (formData.phone || '').replace(/\D/g, '');
+    if (cleanPhone.length !== 10) {
+      setPhoneError('Phone number must be exactly 10 digits.');
+      alert('⚠️ Phone number must be exactly 10 digits (e.g. 9876543210). Less than 10 digits are invalid.');
       return;
     }
 
@@ -328,9 +384,53 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
             </div>
           </div>
 
-          {/* Registration Section Front & Center */}
-          <div className="registration-container" style={{ marginTop: '1.2rem', paddingTop: '1.2rem' }}>
-            <h3 className="modal-section-title">Participate & Register</h3>
+          {/* Student Registration Form Section Front & Center */}
+          <div className="registration-container" id="student-registration-form-section" style={{ 
+            marginTop: '1.2rem', 
+            borderRadius: 'var(--radius-lg)',
+            padding: '1.2rem',
+            border: '1.5px solid rgba(16, 185, 129, 0.35)',
+            background: 'rgba(16, 185, 129, 0.04)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.8rem', marginBottom: '1rem' }}>
+              <div>
+                <h3 className="modal-section-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#10b981', fontSize: '1.2rem', fontWeight: 800 }}>
+                  🎓 Student Registration Form
+                </h3>
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0.25rem 0 0 0' }}>
+                  Enter your student credentials below to claim your official digital event pass.
+                </p>
+              </div>
+
+              {allEvents && Array.isArray(allEvents) && allEvents.length > 1 && onSelectEvent && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Select Fest:</label>
+                  <select
+                    value={event ? event.id : ''}
+                    onChange={(e) => {
+                      const found = allEvents.find(ev => ev && String(ev.id) === String(e.target.value));
+                      if (found) onSelectEvent(found);
+                    }}
+                    style={{
+                      padding: '0.4rem 0.8rem',
+                      borderRadius: 'var(--radius-md)',
+                      border: '1px solid var(--border-color)',
+                      background: 'var(--bg-secondary)',
+                      color: 'var(--text-primary)',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {allEvents.filter(ev => ev && ev.id && ev.status === 'approved').map(ev => (
+                      <option key={ev.id} value={ev.id}>
+                        {ev.title || 'Campus Event'} {(!ev.price || ev.price === 0 || ev.price === 'Free') ? '🎟️ (FREE)' : `(₹${ev.price})`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
             
             {isSubmitted ? (
               <div className="success-state" style={{ padding: '1rem 0' }}>
@@ -495,29 +595,57 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
 
                 <div className="form-group-row">
                   <div className="form-group">
-                    <label className="form-label">Email ID *</label>
+                    <label className="form-label">Email ID (Must contain '@') *</label>
                     <input
                       type="email"
                       name="email"
                       className="form-input"
                       required
-                      placeholder="e.g. rahul@univ.edu"
+                      placeholder="e.g. student@univ.edu"
                       value={formData.email}
                       onChange={handleInputChange}
                     />
+                    {emailError ? (
+                      <span style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '0.3rem', display: 'block', fontWeight: 600 }}>
+                        ⚠️ {emailError}
+                      </span>
+                    ) : null}
+                    {formData.email && !emailError && formData.email.includes('@') ? (
+                      <span style={{ color: '#10b981', fontSize: '0.78rem', marginTop: '0.3rem', display: 'block', fontWeight: 600 }}>
+                        ✓ Valid Email Format
+                      </span>
+                    ) : null}
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">WhatsApp/Contact Number *</label>
+                    <label className="form-label">WhatsApp/Contact Number (10 Digits) *</label>
                     <input
                       type="tel"
                       name="phone"
                       className="form-input"
                       required
-                      placeholder="10-digit mobile number"
-                      value={formData.phone}
+                      maxLength={10}
+                      minLength={10}
+                      pattern="[0-9]{10}"
+                      placeholder="10-digit mobile number (e.g. 9876543210)"
+                      value={formData.phone || ''}
                       onChange={handleInputChange}
                     />
+                    {formData.phone && formData.phone.length > 0 && formData.phone.length < 10 ? (
+                      <span style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '0.3rem', display: 'block', fontWeight: 600 }}>
+                        ⚠️ Invalid: Exactly 10 digits required ({formData.phone.length}/10)
+                      </span>
+                    ) : null}
+                    {formData.phone && formData.phone.length === 10 ? (
+                      <span style={{ color: '#10b981', fontSize: '0.78rem', marginTop: '0.3rem', display: 'block', fontWeight: 600 }}>
+                        ✓ Valid 10-digit mobile number
+                      </span>
+                    ) : null}
+                    {phoneError && !formData.phone ? (
+                      <span style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: '0.3rem', display: 'block', fontWeight: 600 }}>
+                        ⚠️ {phoneError}
+                      </span>
+                    ) : null}
                   </div>
                 </div>
 
@@ -547,7 +675,7 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
                     </div>
 
                     <div className="form-group" style={{ marginTop: '1rem', textAlign: 'left' }}>
-                      <label className="form-label">Payment UTR / Transaction ID *</label>
+                      <label className="form-label" style={{ color: '#ffffff' }}>Payment UTR / Transaction ID *</label>
                       <input
                         type="text"
                         name="utr"
@@ -576,10 +704,10 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
             )}
           </div>
 
-          <h3 className="modal-section-title" style={{ marginTop: '2rem' }}>About the Event</h3>
-          <p className="modal-desc-text">{event.description}</p>
+          <h3 className="modal-section-title" style={{ marginTop: '2rem', color: 'var(--text-primary)' }}>About the Event</h3>
+          <p className="modal-desc-text" style={{ color: 'var(--text-secondary)' }}>{event.description}</p>
 
-          <h3 className="modal-section-title">Eligibility & Criteria</h3>
+          <h3 className="modal-section-title" style={{ color: 'var(--text-primary)' }}>Eligibility & Criteria</h3>
           <div className="modal-criteria-box">
             <strong>Important Guidelines:</strong>
             {event.criteria}
@@ -594,13 +722,13 @@ export default function EventDetailModal({ event, clubs = [], isOpen, onClose, o
               border: '1px solid var(--border-color)', 
               backgroundColor: 'var(--bg-tertiary)' 
             }}>
-              <h3 className="modal-section-title" style={{ marginTop: '0', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '1rem' }}>
+              <h3 className="modal-section-title" style={{ marginTop: '0', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '1rem', color: 'var(--text-primary)' }}>
                 Organizing Club Details
               </h3>
               <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center', marginBottom: '0.8rem' }}>
                 <span style={{ fontSize: '1.8rem' }}>{clubInfo.logo}</span>
                 <div>
-                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>{clubInfo.name}</h4>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>{clubInfo.name}</h4>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>Active Members: {clubInfo.memberCount}</p>
                 </div>
               </div>

@@ -210,8 +210,30 @@ export default function App() {
   };
 
   const handleOpenDetailModal = (event) => {
-    setSelectedEvent(event);
-    setIsModalOpen(true);
+    if (event && event.id && !event.nativeEvent && !event.target) {
+      setSelectedEvent(event);
+      setIsModalOpen(true);
+    } else {
+      handleOpenGetFreeTicket();
+    }
+  };
+
+  const handleOpenGetFreeTicket = (targetEvent = null) => {
+    // Validate whether targetEvent is a true UniHub event object vs a SyntheticEvent
+    const isRealEvent = targetEvent && targetEvent.id && !targetEvent.nativeEvent && !targetEvent.target;
+    const availableEvents = (events && events.length > 0) ? events : INITIAL_EVENTS;
+
+    const chosenEvent = isRealEvent 
+      ? targetEvent 
+      : (availableEvents.find(e => e && e.status === 'approved' && (!e.price || e.price === 0 || e.price === 'Free')) || 
+         availableEvents.find(e => e && e.status === 'approved') || 
+         availableEvents[0] || 
+         INITIAL_EVENTS[0]);
+
+    if (chosenEvent) {
+      setSelectedEvent(chosenEvent);
+      setIsModalOpen(true);
+    }
   };
 
   const handleCloseDetailModal = () => {
@@ -222,6 +244,12 @@ export default function App() {
   // Student registers for an event
   const handleRegisterStudent = (eventId, studentData) => {
     if (!eventId || !studentData) return;
+    
+    // Call REST API backend silently if available
+    registerAPIEvent(eventId, studentData).catch(err => {
+      console.warn('Backend API registration sync failed, saved locally:', err);
+    });
+
     const updatedEvents = events.map((event) => {
       if (String(event.id) === String(eventId)) {
         const registrants = event.registrants ? [...event.registrants] : [];
@@ -295,6 +323,7 @@ export default function App() {
         theme={theme}
         onToggleTheme={handleToggleTheme}
         onOpenMyPasses={() => setIsMyPassesOpen(true)}
+        onOpenGetFreeTicket={() => handleOpenGetFreeTicket()}
       />
 
       <main className="main-content">
@@ -305,6 +334,7 @@ export default function App() {
             notices={notices}
             clubs={clubs}
             onEventClick={handleOpenDetailModal} 
+            onOpenGetFreeTicket={handleOpenGetFreeTicket}
           />
         )}
 
@@ -384,6 +414,8 @@ export default function App() {
         isOpen={isModalOpen}
         onClose={handleCloseDetailModal}
         onRegister={handleRegisterStudent}
+        allEvents={events}
+        onSelectEvent={(ev) => setSelectedEvent(ev)}
       />
 
       {/* Chitkara-Style My Passes & Tickets Vault Modal */}

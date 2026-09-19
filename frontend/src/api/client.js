@@ -1,5 +1,9 @@
 // EventSync API Client for RM Enterprises REST Server
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+// API base URL is read from .env (VITE_API_BASE_URL)
+// In dev: Vite proxy forwards /api → http://localhost:5000 (see vite.config.js)
+// In production: set VITE_API_BASE_URL to your deployed backend URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+
 
 // Helper for HTTP requests
 async function apiRequest(endpoint, method = 'GET', body = null, token = null) {

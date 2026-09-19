@@ -8,7 +8,8 @@ export default function HeroSection({
   searchQuery = '',
   onSearchChange = () => {},
   selectedCategory = 'all',
-  onCategorySelect = () => {}
+  onCategorySelect = () => {},
+  onOpenGetFreeTicket
 }) {
   const categoryPills = [
     { id: 'all', label: 'All Fests', icon: <Layers size={14} /> },
@@ -128,7 +129,7 @@ export default function HeroSection({
                   <p>📍 Main Auditorium &bull; ⏰ Dec 12, 10:00 AM</p>
                   <div className="iphone-card-footer">
                     <span className="registrations-count">150 Passes Issued</span>
-                    <button className="iphone-action-btn">Get Pass</button>
+                    <button className="iphone-action-btn" onClick={() => onOpenGetFreeTicket && onOpenGetFreeTicket()}>Get Pass</button>
                   </div>
                 </div>
 

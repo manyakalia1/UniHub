@@ -1132,15 +1132,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .modal-content {
-  background: #0f172a !important;
-  color: #ffffff !important;
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
   border-radius: var(--radius-xl);
   max-width: 750px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid var(--border-color) !important;
   position: relative;
   transform: translateY(35px) scale(0.96);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1155,8 +1155,8 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background-color: rgba(30, 41, 59, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   width: 2.2rem;
   height: 2.2rem;
   border-radius: 50%;
@@ -1167,7 +1167,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 999;
   pointer-events: auto;
   transition: var(--transition-fast);
-  color: #ffffff;
+  color: var(--text-primary);
   box-shadow: var(--shadow-sm);
 }
 
@@ -1180,12 +1180,12 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   aspect-ratio: 21 / 9;
   object-fit: cover;
-  background-color: #1e293b;
+  background-color: var(--bg-tertiary);
 }
 
 .modal-body {
   padding: 2rem;
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .modal-header-info {
@@ -1196,7 +1196,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #818cf8 !important;
+  color: var(--color-brand) !important;
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
@@ -1206,7 +1206,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1.8rem;
   line-height: 1.25;
   margin-bottom: 0.8rem;
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .modal-tags {
@@ -1220,10 +1220,10 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: 1fr;
   gap: 1.5rem;
   margin-bottom: 2rem;
-  background: rgba(30, 41, 59, 0.8) !important;
+  background: var(--bg-tertiary) !important;
   padding: 1.2rem;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 @media (min-width: 600px) {
@@ -1241,12 +1241,12 @@ h1, h2, h3, h4, h5, h6 {
   width: 2.2rem;
   height: 2.2rem;
   border-radius: var(--radius-sm);
-  background-color: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: var(--color-brand-light);
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #818cf8;
+  color: var(--color-brand);
   flex-shrink: 0;
 }
 
@@ -1254,27 +1254,27 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #94a3b8 !important;
+  color: var(--text-muted) !important;
   margin-bottom: 0.1rem;
 }
 
 .modal-info-details p {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .modal-section-title {
   font-size: 1.2rem;
   margin-bottom: 0.8rem;
-  border-left: 3px solid #6366f1;
+  border-left: 3px solid var(--color-brand);
   padding-left: 0.6rem;
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
 .modal-desc-text {
   font-size: 0.95rem;
-  color: #cbd5e1 !important;
+  color: var(--text-secondary) !important;
   line-height: 1.6;
   margin-bottom: 2rem;
 }
